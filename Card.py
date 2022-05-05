@@ -6,12 +6,13 @@ class Card:
         self.title = title
         self.desc = desc
 
-    def append_to(self, bucket):
-        cardframe = ttk.Frame(root, padding="3 3 12 12")
-        cardframe.grid(column=0, row=0, sticky="nsew")
+    def gen(self, bucket):
+        cardframe = ttk.Frame(bucket, padding="3 3 12 12")
 
         title = ttk.Label(cardframe, text=self.title)
         title.grid(column=0, row=0, sticky="nsew")
 
         desc = ttk.Label(cardframe, text=self.desc)
         desc.grid(column=0, row=1, sticky="nsew")
+
+        return cardframe
