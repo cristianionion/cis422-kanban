@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 
 from typing import List
+from Card import *
 
 class Bucket:
     def __init__(self, title: str, cards: List["Card"]):
@@ -34,3 +35,6 @@ class Bucket:
         cardholder.grid(column=0, row=1)
 
         return bucketframe
+
+    def add_card(self, name, desc):
+        self.cards.append(Card(name, desc))

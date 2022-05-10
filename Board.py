@@ -4,12 +4,14 @@ from tkinter import ttk
 from typing import List
 
 class Board:
-    def __init__(self, title: str, buckets: List["bucket"]):
+    def __init__(self, root, title: str, buckets: List["bucket"]):
         self.title = title
         self.buckets = buckets
+        self.root = root
+        self.new_name = None
 
-    def gen(self, root):
-        boardframe = ttk.Frame(root, padding="3 3 12 12")
+    def gen(self):
+        boardframe = ttk.Frame(self.root, padding="3 3 12 12")
 
         s = ttk.Style()
         s.configure("BoardTitle.TLabel",
@@ -25,6 +27,31 @@ class Board:
             bucketframe = self.buckets[i].gen(bucketholder)
             bucketframe.grid(row=0, column=i, sticky="n")
 
-        bucketholder.grid(column=0, row=1)
+        bucketholder.grid(column=0, row=2)
+
+        name = StringVar()
+        name_entry = ttk.Entry(boardframe, textvariable=name)
+        name_entry.grid(column=0, row=0, sticky="e")
+        self.new_name = name
+
+        desc = StringVar()
+        desc_entry = ttk.Entry(boardframe, textvariable=desc)
+        desc_entry.grid(column=0, row=1, sticky="e")
+        self.new_desc = desc
+
+        add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card)
+        add_card.grid(column=1, row=0)
 
         return boardframe
+
+    def add_card(self):
+        name = self.new_name.get()
+        self.new_name.set("")
+
+        desc = self.new_desc.get()
+        self.new_desc.set("")
+
+        if len(name) > 0 and len(desc) > 0:
+            self.buckets[0].add_card(name, desc)
+            boardholder = self.gen()
+            boardholder.grid(column=0, row=0)
