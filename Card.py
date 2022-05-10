@@ -7,12 +7,28 @@ class Card:
         self.desc = desc
 
     def gen(self, bucket):
-        cardframe = ttk.Frame(bucket, padding="3 3 12 12")
+        cardframe = ttk.Frame(bucket, padding="4 10 4 10")
 
-        title = ttk.Label(cardframe, text=self.title)
+        s = ttk.Style()
+        s.configure('CardTitle.TLabel',
+                     font="Verdana 12",
+                     padding="4 4 4 4",
+                     foreground='black',
+                     background='darkgray',
+                     relief="groove"
+                     )
+
+        title = ttk.Label(cardframe, text=self.title, style='CardTitle.TLabel')
         title.grid(column=0, row=0, sticky="nsew")
 
-        desc = ttk.Label(cardframe, text=self.desc)
+        s.configure('CardDesc.TLabel',
+                     font="Verdana 8",
+                     padding="4 4 4 4",
+                     foreground='black',
+                     background='darkgray',
+                     relief="groove",
+                     )
+        desc = ttk.Label(cardframe, text=self.desc, style='CardDesc.TLabel')
         desc.grid(column=0, row=1, sticky="nsew")
 
         return cardframe
