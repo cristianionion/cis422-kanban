@@ -15,7 +15,8 @@ class Card:
                      padding="4 4 4 4",
                      foreground='black',
                      background='darkgray',
-                     relief="groove"
+                     justify='center',
+                     relief="groove",
                      )
 
         title = ttk.Label(cardframe, text=self.title, style='CardTitle.TLabel')
@@ -26,6 +27,7 @@ class Card:
                      padding="4 4 4 4",
                      foreground='black',
                      background='darkgray',
+                     justify="center",
                      relief="groove",
                      )
         desc = ttk.Label(cardframe, text=self.desc, style='CardDesc.TLabel')

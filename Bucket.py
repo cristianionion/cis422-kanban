@@ -9,9 +9,20 @@ class Bucket:
         self.cards = cards
 
     def gen(self, board):
-        bucketframe = ttk.Frame(board, padding="3 3 12 12")
+        s = ttk.Style()
+        s.configure('Bucket.TFrame',
+                     relief="ridge",
+                     borderwidth=3,
+                     )
+        bucketframe = ttk.Frame(board, padding="10 10 10 10", style='Bucket.TFrame')
 
-        title = ttk.Label(bucketframe, text=self.title)
+        s.configure('BucketTitle.TLabel',
+                     font="Verdana 14",
+                     padding="4 4 4 4",
+                     foreground='black',
+                     )
+
+        title = ttk.Label(bucketframe, text=self.title, style='BucketTitle.TLabel')
         title.grid(column=0, row=0, sticky="nsew")
 
         cardholder = ttk.Frame(bucketframe, padding="3 3 12 12")
