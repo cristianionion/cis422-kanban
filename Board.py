@@ -11,7 +11,12 @@ class Board:
     def gen(self, root):
         boardframe = ttk.Frame(root, padding="3 3 12 12")
 
-        title = ttk.Label(boardframe, text=self.title)
+        s = ttk.Style()
+        s.configure("BoardTitle.TLabel",
+                     font="Verdana 16",
+                     )
+
+        title = ttk.Label(boardframe, text=self.title, style="BoardTitle.TLabel")
         title.grid(column=0, row=0, sticky="nsew")
 
         bucketholder = ttk.Frame(boardframe, padding="3 3 12 12")
