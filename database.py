@@ -29,33 +29,99 @@ def createDatabase(conn):
 createDatabase(conn)
 
 
-def createTable(conn, project):
+def createTable(conn, board):
     conn.database = "kanban"
     cursor = conn.cursor()
-    print("CREATE TABLE IF NOT EXISTS "+ str(project)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000) )")
-    query = "CREATE TABLE IF NOT EXISTS "+ str(project)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000))"
+    query = "CREATE TABLE IF NOT EXISTS "+ str(board)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000))"
     cursor.execute(query)
 
-project = "FakeProject"
-createTable(conn, project)
+board = "FakeBoard"
+createTable(conn, board)
 
-def addCard(conn,project,card,card_notes, cards_assignment):
+def addCard(conn,board,card,card_notes, cards_assignment):
     conn.database = "kanban"
     cursor = conn.cursor()
-    query = "INSERT INTO "+str(project)+ " (card,card_notes,cards_assignment) VALUES (%s,%s,%s)"
+    query = "INSERT INTO "+str(board)+ " (card,card_notes,cards_assignment) VALUES (%s,%s,%s)"
     vals = (card, card_notes,cards_assignment)
     cursor.execute(query,vals)
     conn.commit()
 
-#addCard(conn,project,"first card","what needs to be done","who is doing it")
+addCard(conn,board,"firstcard","what needs to be done","who is doing it")
 
 
-def updateCard(conn,project,card,card_notes,cards_assignment):
+def updateCard(conn,board,card,card_notes,cards_assignment):
     conn.database = "kanban"
     cursor = conn.cursor()
-    query = "UPDATE "+str(project)+" SET card =%s, card_notes =%s, cards_assignment =%s"
+    query = "UPDATE "+str(board)+" SET card =%s, card_notes =%s, cards_assignment =%s"
     vals = (card,card_notes,cards_assignment)
     cursor.execute(query,vals)
     conn.commit()
 
-#updateCard(conn,project, "first card-updated", "what needs to be done-updated", "who needs to do it-updated")
+#updateCard(conn,board, "first card-updated", "what needs to be done-updated", "who needs to do it-updated")
+
+
+# returns all data for a specific board
+def selectAll(conn,board):
+    conn.database = "kanban"
+    query = "SELECT * from "+str(board)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    return cursor.fetchall()
+
+# print(selectAll(conn,board))
+
+
+# returns all data for a specific card
+def selectOne(conn,board,card):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    query = "SELECT * FROM "+str(board)+" WHERE card = %s"
+    adr = (card,)
+    cursor.execute(query,adr)
+    return cursor.fetchone()
+
+#print(selectOne(conn,board,"firstcard"))
+
+
+# deletes specific card from DB
+def deleteCard(conn,board,card):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    query = "DELETE FROM "+str(board)+" WHERE card =%s"
+    adr = (card,)
+    cursor.execute(query,adr)
+    conn.commit()
+
+#deleteCard(conn,board,"firstcard")
+
+
+# deletes a whole board from DB
+def deleteBoard(conn,board):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    query = "DROP TABLE IF EXISTS "+str(board)
+    cursor.execute(query)
+    conn.commit()
+
+#deleteBoard(conn,"FakeProject")
+
+#https://www.geeksforgeeks.org/how-to-add-a-column-to-a-mysql-table-in-python/
+# inserts new bin into DB for specific kanban board
+def addBin(conn,board, bin):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    query = "ALTER TABLE "+str(board)+" ADD IF NOT EXISTS "+str(bin)+" VARCHAR(100)"
+    cursor.execute(query)
+    conn.commit()
+
+addBin(conn,board,"fakeBin1")
+
+# deletes a bin from a board in DB
+def deleteBin(conn,board,bin):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    query = "ALTER TABLE "+str(board)+" DROP COLUMN IF EXISTS "+str(bin)
+    cursor.execute(query)
+    conn.commit()
+
+#deleteBin(conn,board,"fakeBin1")
