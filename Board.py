@@ -2,12 +2,13 @@ from tkinter import *
 from tkinter import ttk
 
 from typing import List
+from Card import *
 
 class Board:
     def __init__(self, root, title: str, buckets: List["bucket"]):
+        self.root = root
         self.title = title
         self.buckets = buckets
-        self.root = root
         self.new_name = None
 
     def gen(self):
@@ -52,6 +53,7 @@ class Board:
         self.new_desc.set("")
 
         if len(name) > 0 and len(desc) > 0:
-            self.buckets[0].add_card(name, desc)
+            card = Card(name, desc)
+            self.buckets[0].add_card(card)
             boardholder = self.gen()
             boardholder.grid(column=0, row=0)

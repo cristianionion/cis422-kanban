@@ -8,6 +8,26 @@ class Bucket:
     def __init__(self, title: str, cards: List["Card"]):
         self.title = title
         self.cards = cards
+        self.parent = None
+
+    def change_parent_to(self, board: "Board"):
+        self.parent = board
+
+    def shift_left(self, c: "Card"):
+        i = self.parent.buckets.index(self)
+        j = self.cards.index(c)
+        if i >= 1:
+            card = self.cards.pop(j)
+            self.parent.buckets[i-1].add_card(card)
+            self.parent.gen().grid(column=0, row=0)
+
+    def shift_right(self, c: "Card"):
+        i = self.parent.buckets.index(self)
+        j = self.cards.index(c)
+        if i < len(self.parent.buckets) - 1:
+            card = self.cards.pop(j)
+            self.parent.buckets[i+1].add_card(card)
+            self.parent.gen().grid(column=0, row=0)
 
     def gen(self, board):
         s = ttk.Style()
@@ -36,5 +56,6 @@ class Bucket:
 
         return bucketframe
 
-    def add_card(self, name, desc):
-        self.cards.append(Card(name, desc))
+    def add_card(self, c: "Card"):
+        c.change_parent_to(self)
+        self.cards.append(c)
