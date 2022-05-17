@@ -17,6 +17,9 @@ class Bucket:
         i = self.parent.buckets.index(self)
         j = self.cards.index(c)
         if i >= 1:
+            for widget in self.parent.root.grid_slaves():
+                widget.grid_forget()
+
             card = self.cards.pop(j)
             self.parent.buckets[i-1].add_card(card)
             self.parent.gen().grid(column=0, row=0)
@@ -25,6 +28,9 @@ class Bucket:
         i = self.parent.buckets.index(self)
         j = self.cards.index(c)
         if i < len(self.parent.buckets) - 1:
+            for widget in self.parent.root.grid_slaves():
+                widget.grid_forget()
+
             card = self.cards.pop(j)
             self.parent.buckets[i+1].add_card(card)
             self.parent.gen().grid(column=0, row=0)

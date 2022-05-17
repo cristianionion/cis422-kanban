@@ -47,13 +47,17 @@ class Board:
 
     def add_card(self):
         name = self.new_name.get()
-        self.new_name.set("")
-
         desc = self.new_desc.get()
-        self.new_desc.set("")
 
         if len(name) > 0 and len(desc) > 0:
+            self.new_name.set("")
+            self.new_desc.set("")
+
             card = Card(name, desc)
             self.buckets[0].add_card(card)
+
+            for widget in self.root.grid_slaves():
+                widget.grid_forget()
+
             boardholder = self.gen()
             boardholder.grid(column=0, row=0)
