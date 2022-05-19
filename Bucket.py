@@ -37,11 +37,36 @@ class Bucket:
 
     def gen(self, board):
         s = ttk.Style()
-        s.configure('Bucket.TFrame',
-                     relief="ridge",
-                     borderwidth=3,
-                     )
-        bucketframe = ttk.Frame(board, padding="10 10 10 10", style='Bucket.TFrame')
+        if self.title == "Not Started":
+            s.configure('RedBucket.TFrame',
+                         relief="ridge",
+                         borderwidth=3,
+                         background='#f5b8be'
+                         )
+            bucketframe = ttk.Frame(board, padding="10 10 10 10", style='RedBucket.TFrame')
+        elif self.title == "In Progress":
+            s.configure('YellowBucket.TFrame',
+                        relief="ridge",
+                        borderwidth=3,
+                        background='#f4f5b8'
+                        )
+            bucketframe = ttk.Frame(board, padding="10 10 10 10", style='YellowBucket.TFrame')
+        elif self.title == "Completed":
+            s.configure('GreenBucket.TFrame',
+                        relief="ridge",
+                        borderwidth=3,
+                        background='#d1f5b8'
+                        )
+            bucketframe = ttk.Frame(board, padding="10 10 10 10", style='GreenBucket.TFrame')
+        else:
+            s.configure('WhiteBucket.TFrame',
+                        relief="ridge",
+                        borderwidth=3,
+                        background='white'
+                        )
+            bucketframe = ttk.Frame(board, padding="10 10 10 10", style='WhiteBucket.TFrame')
+
+
 
         s.configure('BucketTitle.TLabel',
                      font="Verdana 14",

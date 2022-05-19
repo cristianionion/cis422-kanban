@@ -24,7 +24,7 @@ class Card:
                      font="Verdana 12",
                      padding="4 4 4 4",
                      foreground='black',
-                     background='darkgray',
+                     background='lightgray',
                      justify='center',
                      relief="groove",
                      )
@@ -45,7 +45,7 @@ class Card:
                      font="Verdana 8",
                      padding="4 4 4 4",
                      foreground='black',
-                     background='darkgray',
+                     background='lightgray',
                      justify="center",
                      relief="groove",
                      )
