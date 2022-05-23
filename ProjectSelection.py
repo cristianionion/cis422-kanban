@@ -8,7 +8,6 @@ class ProjectSelection:
     def __init__(self, root):
         self.root = root
         self.boards = []
-        self.board_name = StringVar()
         self.name = None
 
     def gen(self):
@@ -22,10 +21,7 @@ class ProjectSelection:
             user_greeting = ttk.Label(mainframe, text=f"Hello, {self.name}!")
             user_greeting.grid(column=0, row=0)
 
-            name_entry = ttk.Entry(mainframe, text="Name", textvariable=self.board_name)
-            name_entry.grid(column=0, row=1)
-
-            add_board_btn = ttk.Button(mainframe, text="Add Board", command=self.add_board)
+            add_board_btn = ttk.Button(mainframe, text="Create New Board", command=self.add_board)
             add_board_btn.grid(column=1, row=1)
 
             for i in range(len(self.boards)):
@@ -35,16 +31,61 @@ class ProjectSelection:
         return mainframe
 
     def add_board(self):
-        name = self.board_name.get()
+        new_window = Tk()
 
-        if len(name) > 0:
-            self.board_name.set("")
-            self.boards.append(name)
+        name_text = ttk.Label(new_window, text="Enter name:")
+        name_text.grid(column=0, row=0)
 
-            for widget in self.root.grid_slaves():
-                widget.grid_forget()
+        name_entry = ttk.Entry(new_window)
+        name_entry.grid(column=1, row=0)
 
-            self.gen().grid(column=0, row=0)
+        num_text = ttk.Label(new_window, text="Enter number of buckets:")
+        num_text.grid(column=0, row=1)
+
+        num_entry = ttk.Entry(new_window)
+        num_entry.grid(column=1, row=1)
+
+        add_name = ttk.Button(new_window, text="Continue", command=lambda: add_buckets())
+        add_name.grid(column=2, row=0)
+
+        def add_buckets():
+            name = name_entry.get()
+            num = num_entry.get()
+
+            if len(name) > 0 and len(num) > 0:
+                for widget in new_window.grid_slaves():
+                    widget.grid_forget()
+
+                instructions = ttk.Label(new_window, text="Enter bucket names in order")
+                instructions.grid(column=0, row=0)
+
+                bucket_entry = ttk.Entry(new_window)
+                bucket_entry.grid(column=0, row=1)
+
+                buckets = []
+                bucket_i = [0]
+
+                continue_button = ttk.Button(new_window, text="Next", command=lambda: next_bucket())
+                continue_button.grid(column=1, row=1)
+
+            def next_bucket():
+                bucket = bucket_entry.get()
+
+                if len(bucket) > 0:
+                    buckets.append(bucket)
+                    bucket_i[0] += 1
+                    bucket_entry.delete(0, END)
+
+                    if bucket_i[0] == int(num):
+                        print(buckets)
+                        new_window.destroy()
+
+                        self.boards.append(name)
+
+                        for widget in self.root.grid_slaves():
+                            widget.grid_forget()
+
+                        self.gen().grid(column=0, row=0)
 
     def enter_board(self, index):
         for widget in self.root.grid_slaves():
