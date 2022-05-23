@@ -29,7 +29,7 @@ class ProjectSelection:
             add_board_btn.grid(column=1, row=1)
 
             for i in range(len(self.boards)):
-                b = ttk.Button(mainframe, text=self.boards[i], command=lambda: self.enter_board(b))
+                b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.enter_board(index))
                 b.grid(column=0, row=i+2) 
 
         return mainframe
@@ -46,7 +46,7 @@ class ProjectSelection:
 
             self.gen().grid(column=0, row=0)
 
-    def enter_board(self, event):
+    def enter_board(self, index):
         for widget in self.root.grid_slaves():
             widget.grid_forget()
 
@@ -55,7 +55,7 @@ class ProjectSelection:
                    Bucket("Completed", [])
                    ]
 
-        b = Board(self.root, event["text"], buckets)
+        b = Board(self.root, self.boards[index], buckets)
 
         for bucket in buckets:
             bucket.change_parent_to(b)
