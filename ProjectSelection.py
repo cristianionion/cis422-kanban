@@ -22,15 +22,15 @@ class ProjectSelection:
             user_greeting = ttk.Label(mainframe, text=f"Hello, {self.name}!")
             user_greeting.grid(column=0, row=0)
 
-        name_entry = ttk.Entry(mainframe, text="Name", textvariable=self.board_name)
-        name_entry.grid(column=0, row=1)
+            name_entry = ttk.Entry(mainframe, text="Name", textvariable=self.board_name)
+            name_entry.grid(column=0, row=1)
 
-        add_board_btn = ttk.Button(mainframe, text="Add Board", command=self.add_board)
-        add_board_btn.grid(column=1, row=1)
+            add_board_btn = ttk.Button(mainframe, text="Add Board", command=self.add_board)
+            add_board_btn.grid(column=1, row=1)
 
-        for i in range(len(self.boards)):
-            b = ttk.Button(mainframe, text=self.boards[i], command=lambda: self.enter_board(b))
-            b.grid(column=0, row=i+2) 
+            for i in range(len(self.boards)):
+                b = ttk.Button(mainframe, text=self.boards[i], command=lambda: self.enter_board(b))
+                b.grid(column=0, row=i+2) 
 
         return mainframe
 
