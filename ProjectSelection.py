@@ -10,6 +10,7 @@ class ProjectSelection:
         self.root = root
         self.boards = []
         self.name = None
+        self.buckets = []
 
     def gen(self):
         mainframe = ttk.Frame(self.root)
@@ -66,7 +67,7 @@ class ProjectSelection:
                 bucket_entry = ttk.Entry(new_window)
                 bucket_entry.grid(column=0, row=1)
 
-                buckets = []
+                self.buckets = []
                 bucket_i = [0]
 
                 continue_button = ttk.Button(new_window, text="Next", command=lambda: next_bucket())
@@ -76,12 +77,12 @@ class ProjectSelection:
                 bucket = bucket_entry.get()
 
                 if len(bucket) > 0:
-                    buckets.append(bucket)
+                    self.buckets.append(Bucket(bucket, []))
                     bucket_i[0] += 1
                     bucket_entry.delete(0, END)
 
                     if bucket_i[0] == int(num):
-                        print(buckets)
+                        print(self.buckets)
                         new_window.destroy()
 
                         self.boards.append(name)
@@ -95,14 +96,16 @@ class ProjectSelection:
         for widget in self.root.grid_slaves():
             widget.grid_forget()
 
-        buckets = [Bucket("Not Started", []),
-                   Bucket("In Progress", []),
-                   Bucket("Completed", [])
-                   ]
+        if len(self.buckets) == 0:
 
-        b = Board(self.root, self.boards[index], buckets)
+            self.buckets = [Bucket("Not Started", []),
+                       Bucket("In Progress", []),
+                       Bucket("Completed", [])
+                       ]
 
-        for bucket in buckets:
+        b = Board(self.root, self.boards[index], self.buckets)
+
+        for bucket in self.buckets:
             bucket.change_parent_to(b)
 
         b.gen().grid(row=0, column=0)
