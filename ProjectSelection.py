@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import tkinter
 
 from Board import *
 from Bucket import *
@@ -16,6 +17,9 @@ class ProjectSelection:
         if self.name is None:
             login_btn = ttk.Button(mainframe, text="Login", command=self.create_login_window)
             login_btn.grid(column=0, row=0)
+
+            register_btn = ttk.Button(mainframe, text="Register", command=self.create_register_window)
+            register_btn.grid(column=0, row=1)
 
         else:
             user_greeting = ttk.Label(mainframe, text=f"Hello, {self.name}!")
@@ -136,6 +140,56 @@ class ProjectSelection:
     def _login(self, name: str, password: str, new_window):
         self.name = name
         # Need to login here
+        new_window.destroy()
+        for widget in self.root.grid_slaves():
+            widget.grid_forget()
+
+        self.gen().grid(column=0, row=0)
+    
+    def create_register_window(self):
+        new_window = Tk()
+        new_window.title("KFC Registration")
+
+        window_frame = ttk.Frame(new_window, padding = "4 10 4 10")
+
+        name_text = ttk.Label(window_frame, text="Enter Name:")
+        name_text.grid(column=0, row=0)
+
+        name = StringVar() 
+        name_input = ttk.Entry(window_frame, textvariable=name)
+        name_input.grid(column=1, row=0)
+
+        password_text = ttk.Label(window_frame, text="Enter Password:")
+        password_text.grid(column=0, row=1)
+
+        password = StringVar() 
+        password_input = ttk.Entry(window_frame, textvariable=password)
+        password_input.grid(column=1, row=1)
+
+        user_type_text = ttk.Label(window_frame, text="Select your user type:")
+        user_type_text.grid(column=0, row=2)
+
+        user_type = IntVar(new_window) # need to give the window as an arg for this to work
+        student_btn = ttk.Radiobutton(window_frame, text = "Student", variable = user_type, value = 0)
+        student_btn.grid(column = 1, row = 2)
+        instructor_btn = ttk.Radiobutton(window_frame, text = "Instructor", variable = user_type, value = 1)
+        instructor_btn.grid(column = 2, row = 2)
+
+        register_button = ttk.Button(window_frame,
+                                  text="Register",
+                                  command=lambda: self._register(name_input.get(), password_input.get(), user_type.get(), new_window)
+                                  )
+        register_button.grid(column=0, row=3)
+
+        window_frame.grid(column=0, row=0)
+
+        new_window.mainloop()        
+
+    def _register(self, name: str, password: str, user_type: int, new_window):
+        self.name = name
+        # TODO: check un and pw for allowed chars
+        # TODO: query DB to check for duplicate account(s)
+        # TODO: add account to DB
         new_window.destroy()
         for widget in self.root.grid_slaves():
             widget.grid_forget()
