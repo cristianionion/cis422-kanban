@@ -113,25 +113,34 @@ class ProjectSelection:
 
         window_frame = ttk.Frame(new_window, padding="4 10 4 10")
 
+        user_type_text = ttk.Label(window_frame, text="Select your user type:")
+        user_type_text.grid(column=0, row=0)
+
+        user_type = IntVar(new_window)  # need to give the window as an arg for this to work
+        student_btn = ttk.Radiobutton(window_frame, text="Student", variable=user_type, value=0)
+        student_btn.grid(column=1, row=0)
+        instructor_btn = ttk.Radiobutton(window_frame, text="Instructor", variable=user_type, value=1)
+        instructor_btn.grid(column=2, row=0)
+
         name_text = ttk.Label(window_frame, text="Enter Name:")
-        name_text.grid(column=0, row=0)
+        name_text.grid(column=0, row=1)
 
         name = StringVar() 
         name_input = ttk.Entry(window_frame, textvariable=name)
-        name_input.grid(column=1, row=0)
+        name_input.grid(column=1, row=1)
 
         password_text = ttk.Label(window_frame, text="Enter Password:")
-        password_text.grid(column=0, row=1)
+        password_text.grid(column=0, row=2)
 
         password = StringVar() 
         password_input = ttk.Entry(window_frame, textvariable=password)
-        password_input.grid(column=1, row=1)
+        password_input.grid(column=1, row=2)
 
         login_button = ttk.Button(window_frame,
                                   text="Sign in",
                                   command=lambda: self._login(name_input.get(), password_input.get(), new_window)
                                   )
-        login_button.grid(column=0, row=2)
+        login_button.grid(column=0, row=3)
 
         window_frame.grid(column=0, row=0)
 
