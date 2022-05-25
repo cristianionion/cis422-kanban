@@ -5,59 +5,98 @@ from typing import List
 from Card import *
 
 class Board:
+    '''
+    A Board that represents a Kanban board. It stores all information associated
+    with a Board including Buckets and Cards. It also is responsible for creating
+    the Tkinter objects that display its information to the user.
+    '''
+
     def __init__(self, root, title: str, buckets: List["bucket"]):
-        self.root = root
+        self.root = root # The root Tkinter object
         self.title = title
-        self.buckets = buckets
-        self.new_name = None
+        self.buckets = buckets # A list of the Buckets in this Board
+        self.new_name = None # Is later used to store the name of a new Card
+        self.new_desc = None # Is later used to store the description of a new Card
+
+    def add_card(self):
+        '''
+        A method that gets called when the add card button is pressed.
+        It is used to add a Card to the first Bucket.
+        '''
+
+        # Gets the name and description for the new Card
+        name = self.new_name.get()
+        desc = self.new_desc.get()
+
+        # Checks if name and desc are not empty
+        if len(name) > 0 and len(desc) > 0:
+
+            # Removes text inside the name and description text boxes
+            self.new_name.set("")
+            self.new_desc.set("")
+
+            # Creates a new Card and adds it to the Cards list in the first Bucket
+            card = Card(name, desc)
+            self.buckets[0].add_card(card)
+
+            # Deletes the whole Board's visuals
+            for widget in self.root.grid_slaves():
+                widget.grid_forget()
+
+            # Redraws the visuals for the whole Board 
+            boardholder = self.gen().grid(column=0, row=0)
 
     def gen(self):
+        '''
+        Responsible for creating the Tkinter object that will be used
+        to display the Board to the user. This method is recursive. It
+        calls the gen method for each Bucket and Card on the Board.
+        '''
+
+        # The Frame that stores everything that goes on the Board
         boardframe = ttk.Frame(self.root, padding="3 3 12 12")
 
+        # The style object that is used for the title of the Board
         s = ttk.Style()
         s.configure("BoardTitle.TLabel",
                      font="Verdana 16",
                      )
 
+        # The title of the Board
         title = ttk.Label(boardframe, text=self.title, style="BoardTitle.TLabel")
         title.grid(column=0, row=0, sticky="nsew")
 
+        # The Frame that holds all the Buckets on the Board
         bucketholder = ttk.Frame(boardframe, padding="3 3 12 12")
 
+        # Generates the Tkinter for each of the Boards and adds it to the bucketholder frame
         for i in range(len(self.buckets)):
             bucketframe = self.buckets[i].gen(bucketholder)
             bucketframe.grid(row=0, column=i, sticky="n")
 
+        # Adds the bucketholder frame onto the Board
         bucketholder.grid(column=0, row=2)
 
+        # A variable to hold the current name in name_entry
         name = StringVar()
-        name_entry = ttk.Entry(boardframe, textvariable=name)
-        name_entry.grid(column=0, row=0, sticky="e")
         self.new_name = name
 
+        # The name text entry box
+        name_entry = ttk.Entry(boardframe, textvariable=name)
+        name_entry.grid(column=0, row=0, sticky="e")
+
+        # A variable to hold the current description in desc_entry
         desc = StringVar()
-        desc_entry = ttk.Entry(boardframe, textvariable=desc)
-        desc_entry.grid(column=0, row=1, sticky="e")
         self.new_desc = desc
 
+        # The description text entry box
+        desc_entry = ttk.Entry(boardframe, textvariable=desc)
+        desc_entry.grid(column=0, row=1, sticky="e")
+
+        # A Button that adds a new Card to the Board
         add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card)
         add_card.grid(column=1, row=0)
 
+        # Returns the whole Board's visuals
         return boardframe
 
-    def add_card(self):
-        name = self.new_name.get()
-        desc = self.new_desc.get()
-
-        if len(name) > 0 and len(desc) > 0:
-            self.new_name.set("")
-            self.new_desc.set("")
-
-            card = Card(name, desc)
-            self.buckets[0].add_card(card)
-
-            for widget in self.root.grid_slaves():
-                widget.grid_forget()
-
-            boardholder = self.gen()
-            boardholder.grid(column=0, row=0)
