@@ -54,7 +54,6 @@ def addCard(conn,query, info):
     cursor.execute(query,vals)
     conn.commit()
 
-#addCard(conn,board,"firstcard","what needs to be done","who is doing it")
 
 
 def updateCard(conn,board,card,card_notes,cards_assignment):
@@ -65,7 +64,6 @@ def updateCard(conn,board,card,card_notes,cards_assignment):
     cursor.execute(query,vals)
     conn.commit()
 
-#updateCard(conn,board, "first card-updated", "what needs to be done-updated", "who needs to do it-updated")
 
 
 # returns all data for a specific board
@@ -76,7 +74,6 @@ def selectAll(conn,board):
     cursor.execute(query)
     return cursor.fetchall()
 
-# print(selectAll(conn,board))
 
 
 # returns all data for a specific card
@@ -88,7 +85,6 @@ def selectOne(conn,board,card):
     cursor.execute(query,adr)
     return cursor.fetchone()
 
-#print(selectOne(conn,board,"firstcard"))
 
 
 # deletes specific card from DB
@@ -100,7 +96,6 @@ def deleteCard(conn,board,card):
     cursor.execute(query,adr)
     conn.commit()
 
-#deleteCard(conn,board,"firstcard")
 
 
 # deletes a whole board from DB
@@ -111,7 +106,6 @@ def deleteBoard(conn,board):
     cursor.execute(query)
     conn.commit()
 
-#deleteBoard(conn,"FakeProject")
 
 #https://www.geeksforgeeks.org/how-to-add-a-column-to-a-mysql-table-in-python/
 # inserts new bin into DB for specific kanban board
@@ -122,7 +116,6 @@ def addBin(conn,board, bin):
     cursor.execute(query)
     conn.commit()
 
-#addBin(conn,board,"fakeBin1")
 
 # deletes a bin from a board in DB
 def deleteBin(conn,board,bin):
@@ -132,4 +125,3 @@ def deleteBin(conn,board,bin):
     cursor.execute(query)
     conn.commit()
 
-#deleteBin(conn,board,"fakeBin1")

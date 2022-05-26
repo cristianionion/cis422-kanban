@@ -34,7 +34,7 @@ class Board:
         desc = self.new_desc.get()
         print("PLSPLSPLS", name, desc)
 
-        query = "INSERT INTO " +str(self.title)+" (title, description, "
+        query = "INSERT INTO " +str(self.title).replace(" ","あ")+" (title, description, "
 
         bins = self.buckets
         binsList = []
@@ -45,17 +45,16 @@ class Board:
         #print(binsList)
         for i in range(len(binsList)):
             if i == (len(binsList)-1):
-                query += binsList[i]+") VALUES ("
+                query += binsList[i].replace(" ","あ")+") VALUES ("
             else:
-                query += binsList[i]+', '
+                query += binsList[i].replace(" ","あ")+', '
         for i in range(len(binsList)+2):
             if i == (len(binsList)+1):
                 query += "%s)"
             else:
                 query += "%s,"
-        #vals = "("+str(name)+", "+str(desc)+", " +"True, "+"False, " * (len(binsList)-2) +"False)"
         info = (len(binsList), name, desc)
-        #print(query,vals)
+        print(query, info)
         addCard(conn, query, info)
 
         # Checks if name and desc are not empty

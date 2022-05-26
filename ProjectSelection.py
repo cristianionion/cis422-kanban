@@ -183,13 +183,16 @@ class ProjectSelection:
             binsList.append(bins[i].title)
             #print(bins[i].title)
         #print(binsList)
-        query = "CREATE TABLE IF NOT EXISTS "+ str(self.boards[index])+ " (title VARCHAR(2000),description VARCHAR(2000),"
+        #print("!!!!!", str(self.boards[index]))
+        noSpaceBoard = str(self.boards[index]).replace(" ","あ")
+        print(noSpaceBoard)
+        query = "CREATE TABLE IF NOT EXISTS "+ noSpaceBoard+ " (title VARCHAR(2000),description VARCHAR(2000),"
         for i in range(len(binsList)):
             if i == (len(binsList)-1):
-                query += binsList[i]+" VARCHAR(2000))"
+                query += binsList[i].replace(" ","あ")+" VARCHAR(2000))"
             else:
-                query += binsList[i]+" VARCHAR(2000),"
-        print("MAYBE", query)
+                query += binsList[i].replace(" ","あ")+" VARCHAR(2000),"
+        print(query)
         
         # save board in database
         createTable(conn,query)
