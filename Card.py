@@ -31,6 +31,19 @@ class Card:
         '''
         self.parent.shift_right(self)
 
+    def view(self, cardframe):
+        '''
+        Views the card induvidually in a popup window
+        '''
+        oneCardFrame = Toplevel(cardframe)
+        oneCardFrame.title(self.title)
+
+        title = ttk.Label(oneCardFrame, text=self.title, style='CardTitle.TLabel')
+        title.pack()
+
+        desc = ttk.Label(oneCardFrame, text=self.desc, style='CardDesc.TLabel')
+        desc.pack()
+
     def gen(self, bucket):
         '''
         Creates the Tkinter object that can be displayed.
@@ -81,6 +94,11 @@ class Card:
         # The description of the Card
         desc = ttk.Label(cardframe, text=self.desc, style='CardDesc.TLabel')
         desc.grid(column=0, row=1, sticky="nsew")
+
+        # button to view card induvidually in a new 'popup' window
+        view_btn = ttk.Button(cardframe, text = "View Card Induvidually", style='CardTitle.TLabel', 
+                                command = lambda: self.view(cardframe))
+        view_btn.grid(column = 0, row = 2, sticky = "nsew")
 
         # Returns the entire Card
         return cardframe
