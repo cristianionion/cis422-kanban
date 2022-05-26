@@ -75,6 +75,7 @@ class Card:
                      background='lightgray',
                      justify="center",
                      relief="groove",
+                     wraplength=240, # Line wrap, can also do a string with units like "720p", see: https://anzeljg.github.io/rin2/book2/2405/docs/tkinter/dimensions.html
                      )
 
         # The description of the Card
