@@ -19,6 +19,7 @@ each card is a new row in table:
 """
 
 import mysql.connector
+from numpy import bincount
 
 conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
 
@@ -29,24 +30,31 @@ def createDatabase(conn):
 createDatabase(conn)
 
 
-def createTable(conn, board):
+def createTable(conn, query):
     conn.database = "kanban"
     cursor = conn.cursor()
-    query = "CREATE TABLE IF NOT EXISTS "+ str(board)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000))"
+    #query = "CREATE TABLE IF NOT EXISTS "+ str(board)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000))"
     cursor.execute(query)
 
-board = "FakeBoard"
-createTable(conn, board)
+#board = "FakeBoard"
+#createTable(conn, board)
 
-def addCard(conn,board,card,card_notes, cards_assignment):
+def addCard(conn,query, info):
+    binNum = info[0]
+    name = info[1]
+    desc = info[2]
+    vals = [name, desc,True] 
+    for i in range(binNum-1):
+        vals.append(False)
     conn.database = "kanban"
     cursor = conn.cursor()
-    query = "INSERT INTO "+str(board)+ " (card,card_notes,cards_assignment) VALUES (%s,%s,%s)"
-    vals = (card, card_notes,cards_assignment)
+    #query = "INSERT INTO "+str(board)+ " (card,card_notes,cards_assignment) VALUES (%s,%s,%s)"
+    #vals = (card, card_notes,cards_assignment)
+    print(query, vals)
     cursor.execute(query,vals)
     conn.commit()
 
-addCard(conn,board,"firstcard","what needs to be done","who is doing it")
+#addCard(conn,board,"firstcard","what needs to be done","who is doing it")
 
 
 def updateCard(conn,board,card,card_notes,cards_assignment):
@@ -114,7 +122,7 @@ def addBin(conn,board, bin):
     cursor.execute(query)
     conn.commit()
 
-addBin(conn,board,"fakeBin1")
+#addBin(conn,board,"fakeBin1")
 
 # deletes a bin from a board in DB
 def deleteBin(conn,board,bin):

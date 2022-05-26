@@ -4,6 +4,11 @@ import tkinter
 
 from Board import *
 from Bucket import *
+from database import *
+import mysql.connector
+
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
+
 
 class ProjectSelection:
     '''
@@ -123,6 +128,7 @@ class ProjectSelection:
                 '''
                 # Get the name of the Bucket
                 bucket = bucket_entry.get()
+                #print(bucket)
 
                 # Make sure the Bucket input is not an empty string
                 if len(bucket) > 0:
@@ -164,6 +170,29 @@ class ProjectSelection:
 
         # Create the Board
         b = Board(self.root, self.boards[index], self.buckets)
+
+
+        #print("YOOOOO",self.root, self.boards[index],self.buckets)
+        #print(b.title)
+        print(b.buckets, len(b.buckets))
+
+        bins = b.buckets
+        binsList = []
+        # this creates a string for db query 
+        for i in range(len(b.buckets)):
+            binsList.append(bins[i].title)
+            #print(bins[i].title)
+        #print(binsList)
+        query = "CREATE TABLE IF NOT EXISTS "+ str(self.boards[index])+ " (title VARCHAR(2000),description VARCHAR(2000),"
+        for i in range(len(binsList)):
+            if i == (len(binsList)-1):
+                query += binsList[i]+" VARCHAR(2000))"
+            else:
+                query += binsList[i]+" VARCHAR(2000),"
+        print("MAYBE", query)
+        
+        # save board in database
+        createTable(conn,query)
 
         # Reparent the new Buckets
         for bucket in self.buckets:

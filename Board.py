@@ -3,6 +3,11 @@ from tkinter import ttk
 
 from typing import List
 from Card import *
+from database import *
+import mysql.connector
+
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
+
 
 class Board:
     '''
@@ -27,6 +32,31 @@ class Board:
         # Gets the name and description for the new Card
         name = self.new_name.get()
         desc = self.new_desc.get()
+        print("PLSPLSPLS", name, desc)
+
+        query = "INSERT INTO " +str(self.title)+" (title, description, "
+
+        bins = self.buckets
+        binsList = []
+        # this creates a string for db query 
+        for i in range(len(bins)):
+            binsList.append(bins[i].title)
+            #print(bins[i].title)
+        #print(binsList)
+        for i in range(len(binsList)):
+            if i == (len(binsList)-1):
+                query += binsList[i]+") VALUES ("
+            else:
+                query += binsList[i]+', '
+        for i in range(len(binsList)+2):
+            if i == (len(binsList)+1):
+                query += "%s)"
+            else:
+                query += "%s,"
+        #vals = "("+str(name)+", "+str(desc)+", " +"True, "+"False, " * (len(binsList)-2) +"False)"
+        info = (len(binsList), name, desc)
+        #print(query,vals)
+        addCard(conn, query, info)
 
         # Checks if name and desc are not empty
         if len(name) > 0 and len(desc) > 0:
@@ -52,6 +82,9 @@ class Board:
         to display the Board to the user. This method is recursive. It
         calls the gen method for each Bucket and Card on the Board.
         '''
+
+        # save board in db
+        #createTable(conn, self.title)
 
         # The Frame that stores everything that goes on the Board
         boardframe = ttk.Frame(self.root, padding="3 3 12 12")
