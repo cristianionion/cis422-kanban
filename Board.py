@@ -32,7 +32,7 @@ class Board:
         # Gets the name and description for the new Card
         name = self.new_name.get()
         desc = self.new_desc.get()
-        print("PLSPLSPLS", name, desc)
+        #print("PLSPLSPLS", name, desc)
 
         query = "INSERT INTO " +str(self.title).replace(" ","あ")+" (title, description, "
 

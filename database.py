@@ -50,7 +50,7 @@ def addCard(conn,query, info):
     cursor = conn.cursor()
     #query = "INSERT INTO "+str(board)+ " (card,card_notes,cards_assignment) VALUES (%s,%s,%s)"
     #vals = (card, card_notes,cards_assignment)
-    print(query, vals)
+    #print(query, vals)
     cursor.execute(query,vals)
     conn.commit()
 
@@ -61,6 +61,19 @@ def updateCard(conn,board,card,card_notes,cards_assignment):
     cursor = conn.cursor()
     query = "UPDATE "+str(board)+" SET card =%s, card_notes =%s, cards_assignment =%s"
     vals = (card,card_notes,cards_assignment)
+    cursor.execute(query,vals)
+    conn.commit()
+
+def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    # title and desc don't change, remaining are buckets on board
+    # search for card title, make newLocation column True, rest false
+    # need sum like UPDATE board SET oldLoc = False, newLoc = True WHERE title = cardTitle
+
+    query = "UPDATE "+str(board).replace(" ","あ")+ " SET "+ str(oldLocation)+" =%s, "+str(newLocation)+" =%s WHERE title =%s "
+    print(query)
+    vals = (False,True, str(cardTitle))
     cursor.execute(query,vals)
     conn.commit()
 

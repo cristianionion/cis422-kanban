@@ -1,8 +1,13 @@
 from tkinter import *
 from tkinter import ttk
+import mysql.connector
 
 from typing import List
 from Card import *
+from database import *
+
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
+
 
 class Bucket:
     '''
@@ -41,6 +46,17 @@ class Bucket:
 
             self.parent.gen().grid(column=0, row=0) # Redraw the Board
 
+
+            bins = self.parent.buckets
+            binsList = []
+            for bin in range(len(bins)):
+                binsList.append(bins[bin].title)
+                #print(binsList[bin].title)
+            oldLoc = self.title
+            newLoc = binsList[i-1]
+            #print(binsList, card.title,len(binsList), i)
+            cardMoved(conn,self.parent.title,card.title,oldLoc,newLoc)
+
     def shift_right(self, c: "Card"):
         '''
         Takes a Card and moves it one bucket to the right.
@@ -59,6 +75,18 @@ class Bucket:
             self.parent.buckets[i+1].add_card(card) # Add the Card in its new position
 
             self.parent.gen().grid(column=0, row=0) # Redraw the Board
+
+
+            
+            bins = self.parent.buckets
+            binsList = []
+            for bin in range(len(bins)):
+                binsList.append(bins[bin].title)
+                #print(binsList[bin].title)
+            oldLoc = self.title
+            newLoc = binsList[i+1]
+            #print(binsList, card.title,len(binsList), i)
+            cardMoved(conn,self.parent.title,card.title,oldLoc,newLoc)
 
     def add_card(self, c: "Card"):
         '''
