@@ -18,8 +18,13 @@ each card is a new row in table:
 
 """
 
+from winreg import QueryReflectionKey
 import mysql.connector
-from numpy import bincount
+
+#from Board import *
+#from Bucket import *
+#from Card import *
+#from ProjectSelection import *
 
 conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
 
@@ -55,14 +60,14 @@ def addCard(conn,query, info):
     conn.commit()
 
 
+#def updateCard(conn,board,card,card_notes,cards_assignment):
+#    conn.database = "kanban"
+#    cursor = conn.cursor()
+#    query = "UPDATE "+str(board)+" SET card =%s, card_notes =%s, cards_assignment =%s"
+#    vals = (card,card_notes,cards_assignment)
+#    cursor.execute(query,vals)
+#    conn.commit()
 
-def updateCard(conn,board,card,card_notes,cards_assignment):
-    conn.database = "kanban"
-    cursor = conn.cursor()
-    query = "UPDATE "+str(board)+" SET card =%s, card_notes =%s, cards_assignment =%s"
-    vals = (card,card_notes,cards_assignment)
-    cursor.execute(query,vals)
-    conn.commit()
 
 def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
     conn.database = "kanban"
@@ -70,9 +75,7 @@ def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
     # title and desc don't change, remaining are buckets on board
     # search for card title, make newLocation column True, rest false
     # need sum like UPDATE board SET oldLoc = False, newLoc = True WHERE title = cardTitle
-
     query = "UPDATE "+str(board).replace(" ","あ")+ " SET "+ str(oldLocation)+" =%s, "+str(newLocation)+" =%s WHERE title =%s "
-    print(query)
     vals = (False,True, str(cardTitle))
     cursor.execute(query,vals)
     conn.commit()
@@ -82,10 +85,13 @@ def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
 # returns all data for a specific board
 def selectAll(conn,board):
     conn.database = "kanban"
-    query = "SELECT * from "+str(board)
     cursor = conn.cursor()
+    query = "SELECT * FROM "+str(board)
+    #print(query)
     cursor.execute(query)
     return cursor.fetchall()
+
+
 
 
 
@@ -138,3 +144,51 @@ def deleteBin(conn,board,bin):
     cursor.execute(query)
     conn.commit()
 
+def getTables(conn):
+    conn.database = "kanban"
+    mycursor = conn.cursor()
+    mycursor.execute("SHOW TABLES FROM kanban")
+    return mycursor.fetchall()
+
+def getColumns(conn,board):
+    conn.database = "kanban"
+    mycursor = conn.cursor()
+    query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'kanban' AND TABLE_NAME = '"+str(board)+ "'"
+    mycursor.execute(query)
+    return mycursor.fetchall()
+    
+
+
+
+
+#print(getTables(conn)) # a list of tuples, [(board1,),(board2,)]
+#print(getTables(conn)[0][0])  # type=str output "board1"
+#print(len(getTables(conn)), getTables(conn))
+allBoards = getTables(conn)
+
+#for i in range(len(allBoards)):
+#    print(type(allBoards[i]),allBoards[i]) # tuple [(board1,)]
+#    print(type(allBoards[i][0]),allBoards[i][0]) # string "board1"
+
+allBoardsAndTables = []
+for i in range(len(allBoards)):
+    tempBoardTitle = allBoards[i][0]
+    allBoardsAndTables.append(selectAll(conn,tempBoardTitle))
+    #print("\n")
+
+#print(allBoardsAndTables)  
+# returns list of lists of tuples NOT SAME BOARDS, each list has a tuple for each card in that board
+# [[('cardTitle','cardDesc',bool isInThisBin,....)], [('cardTitle2',...)]]
+
+#print(getColumns(conn,allBoards[2][0]))
+#for i in range(len(allBoards)):
+#    print("\n What i want")
+#    print(getColumns(conn,allBoards[i][0])) # this is board's columns
+#    print(allBoards[i][0],type(allBoards[i][0])) # this is board Title
+#    print(getColumns(conn, allBoards[i][0])[1][0])
+
+
+
+# how should i organize this?
+# list of list of tuples, 
+# [ [ (BoardTitle, Col1,Col2,Col3,...), (cardTitle1,cardDesc1,bin,bin,...)]]

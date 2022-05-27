@@ -82,8 +82,7 @@ class Board:
         calls the gen method for each Bucket and Card on the Board.
         '''
 
-        # save board in db
-        #createTable(conn, self.title)
+
 
         # The Frame that stores everything that goes on the Board
         boardframe = ttk.Frame(self.root, padding="3 3 12 12")

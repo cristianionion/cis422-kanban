@@ -51,10 +51,8 @@ class Bucket:
             binsList = []
             for bin in range(len(bins)):
                 binsList.append(bins[bin].title)
-                #print(binsList[bin].title)
             oldLoc = self.title
             newLoc = binsList[i-1]
-            #print(binsList, card.title,len(binsList), i)
             cardMoved(conn,self.parent.title,card.title,oldLoc,newLoc)
 
     def shift_right(self, c: "Card"):
@@ -82,10 +80,8 @@ class Bucket:
             binsList = []
             for bin in range(len(bins)):
                 binsList.append(bins[bin].title)
-                #print(binsList[bin].title)
             oldLoc = self.title
             newLoc = binsList[i+1]
-            #print(binsList, card.title,len(binsList), i)
             cardMoved(conn,self.parent.title,card.title,oldLoc,newLoc)
 
     def add_card(self, c: "Card"):

@@ -192,7 +192,7 @@ class ProjectSelection:
                 query += binsList[i].replace(" ","あ")+" VARCHAR(2000))"
             else:
                 query += binsList[i].replace(" ","あ")+" VARCHAR(2000),"
-        print(query)
+        #print(query)
         
         # save board in database
         createTable(conn,query)
