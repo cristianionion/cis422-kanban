@@ -161,14 +161,8 @@ def getColumns(conn,board):
 
 
 
-#print(getTables(conn)) # a list of tuples, [(board1,),(board2,)]
-#print(getTables(conn)[0][0])  # type=str output "board1"
-#print(len(getTables(conn)), getTables(conn))
 allBoards = getTables(conn)
-
-#for i in range(len(allBoards)):
-#    print(type(allBoards[i]),allBoards[i]) # tuple [(board1,)]
-#    print(type(allBoards[i][0]),allBoards[i][0]) # string "board1"
+#print(allBoards)
 
 allBoardsAndTables = []
 for i in range(len(allBoards)):
@@ -176,19 +170,26 @@ for i in range(len(allBoards)):
     allBoardsAndTables.append(selectAll(conn,tempBoardTitle))
     #print("\n")
 
-#print(allBoardsAndTables)  
-# returns list of lists of tuples NOT SAME BOARDS, each list has a tuple for each card in that board
-# [[('cardTitle','cardDesc',bool isInThisBin,....)], [('cardTitle2',...)]]
+allData = []
+for i in range(len(allBoards)):
+    allData.append([])
+    allData[i].append((allBoards[i][0],),)
+    cols = getColumns(conn,allBoards[i][0])
+    for j in range(len(cols)):
+        allData[i][0] = allData[i][0] + ((cols[j][0]),) 
+        # at this point, each table has a list of one tuple containing boardTitle and colTitles
+    for k in range(len(allBoardsAndTables[i])):
+        allData[i].append(allBoardsAndTables[i][k])
 
-#print(getColumns(conn,allBoards[2][0]))
-#for i in range(len(allBoards)):
-#    print("\n What i want")
-#    print(getColumns(conn,allBoards[i][0])) # this is board's columns
-#    print(allBoards[i][0],type(allBoards[i][0])) # this is board Title
-#    print(getColumns(conn, allBoards[i][0])[1][0])
-
-
+#print(allData[1])
+#print(allData[1][2][4])
+#for i in range(len(allData)):
+#    print(allData[i], "\n")
+#print(allData[0][0], type(allData[0][0]))
+#print(len(allData), len(allData[1]), len(allData[1][1]), allData[1][0][0], allData[1][0][0].replace("あ"," "))
+#print("\n",allData)
 
 # how should i organize this?
-# list of list of tuples, 
+# list of lists of tuples, each list for a board,
+#                        tuple1 = boardtitle+cols, tuple2(+) = card data
 # [ [ (BoardTitle, Col1,Col2,Col3,...), (cardTitle1,cardDesc1,bin,bin,...)]]
