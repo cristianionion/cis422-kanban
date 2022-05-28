@@ -32,7 +32,6 @@ class Board:
         # Gets the name and description for the new Card
         name = self.new_name.get()
         desc = self.new_desc.get()
-        #print("PLSPLSPLS", name, desc)
 
         query = "INSERT INTO " +str(self.title).replace(" ","あ")+" (title, description, "
 
@@ -41,8 +40,6 @@ class Board:
         # this creates a string for db query 
         for i in range(len(bins)):
             binsList.append(bins[i].title)
-            #print(bins[i].title)
-        #print(binsList)
         for i in range(len(binsList)):
             if i == (len(binsList)-1):
                 query += binsList[i].replace(" ","あ")+") VALUES ("
@@ -54,7 +51,6 @@ class Board:
             else:
                 query += "%s,"
         info = (len(binsList), name, desc)
-        print(query, info)
         addCard(conn, query, info)
 
         # Checks if name and desc are not empty

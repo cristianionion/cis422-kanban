@@ -185,11 +185,33 @@ for i in range(len(allBoards)):
 #print(allData[1][2][4])
 #for i in range(len(allData)):
 #    print(allData[i], "\n")
-#print(allData[0][0], type(allData[0][0]))
-#print(len(allData), len(allData[1]), len(allData[1][1]), allData[1][0][0], allData[1][0][0].replace("あ"," "))
+#print(allData[0][0],len(allData[0][0]), type(allData[0][0]))
+#print(len(allData[1][1]), allData[1][0][0], allData[1][0][0].replace("あ"," "))
+
 #print("\n",allData)
 
 # how should i organize this?
 # list of lists of tuples, each list for a board,
 #                        tuple1 = boardtitle+cols, tuple2(+) = card data
 # [ [ (BoardTitle, Col1,Col2,Col3,...), (cardTitle1,cardDesc1,bin,bin,...)]]
+
+
+
+
+for i in range(len(allData)): 
+    bucketNames = []
+    for j in range(len(allData[i][0])):
+        if j == 0:
+            boardName = allData[i][0][0]  # this is the Board's name
+            boardName = boardName.replace("あ"," ")
+            print("\n",boardName)
+        else:
+            bucketNames.append(allData[i][0][j]) # the names of buckets for the respective board
+    print(bucketNames)
+    for k in range(len(allData[i])):
+        cardInfo = []
+        if k>0:
+            for card in range(len(allData[i][k])):
+                cardInfo.append(allData[i][k][card]) # all the info for each card.
+            print(cardInfo)
+
