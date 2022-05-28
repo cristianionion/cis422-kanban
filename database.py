@@ -75,7 +75,8 @@ def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
     # title and desc don't change, remaining are buckets on board
     # search for card title, make newLocation column True, rest false
     # need sum like UPDATE board SET oldLoc = False, newLoc = True WHERE title = cardTitle
-    query = "UPDATE "+str(board).replace(" ","あ")+ " SET "+ str(oldLocation)+" =%s, "+str(newLocation)+" =%s WHERE title =%s "
+    query = "UPDATE "+str(board).replace(" ","あ")+ " SET "+ str(oldLocation).replace(" ","あ")+" =%s, "+str(newLocation).replace(" ","あ")+" =%s WHERE title =%s "
+    #print(query)
     vals = (False,True, str(cardTitle))
     cursor.execute(query,vals)
     conn.commit()
@@ -206,7 +207,7 @@ for i in range(len(allData)):
             boardName = boardName.replace("あ"," ")
             print("\n",boardName)
         else:
-            bucketNames.append(allData[i][0][j]) # the names of buckets for the respective board
+            bucketNames.append(allData[i][0][j].replace("あ"," ")) # the names of buckets for the respective board
     print(bucketNames)
     for k in range(len(allData[i])):
         cardInfo = []
@@ -214,4 +215,3 @@ for i in range(len(allData)):
             for card in range(len(allData[i][k])):
                 cardInfo.append(allData[i][k][card]) # all the info for each card.
             print(cardInfo)
-

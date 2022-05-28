@@ -180,6 +180,8 @@ class ProjectSelection:
         binsList = []
         # this creates a string for db query 
         for i in range(len(b.buckets)):
+            bins[i].title = str(bins[i].title)
+            print(type(bins[i].title))
             binsList.append(bins[i].title)
             #print(bins[i].title)
         #print(binsList)
