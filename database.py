@@ -26,7 +26,7 @@ import mysql.connector
 #from Card import *
 #from ProjectSelection import *
 
-conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="pass")
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
 
 def createDatabase(conn):
     cursor = conn.cursor()
