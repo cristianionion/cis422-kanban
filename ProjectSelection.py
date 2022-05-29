@@ -7,7 +7,7 @@ from Bucket import *
 from database import *
 import mysql.connector
 
-conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="pass")
 
 
 class ProjectSelection:
@@ -49,8 +49,11 @@ class ProjectSelection:
             user_greeting.grid(column=0, row=0)
 
             # A button to create a new board
-            add_board_btn = ttk.Button(mainframe, text="Create New Board", command=self.add_board)
+            add_board_btn = ttk.Button(mainframe, text="Create New Custom Board", command=self.add_board)
             add_board_btn.grid(column=1, row=1)
+
+            add_board_btn = ttk.Button(mainframe, text="Create New Default Board", command=self.add_def_board)
+            add_board_btn.grid(column=1, row=2)
 
             # Displays all of the already created Boards
             for i in range(len(self.boards)):
@@ -59,6 +62,38 @@ class ProjectSelection:
 
         # Returns the whole page
         return mainframe
+
+    def add_def_board(self):
+        new_window = Tk()
+
+        # Prompts the user to enter board name
+        name_text = ttk.Label(new_window, text="Enter name:")
+        name_text.grid(column=0, row=0)
+
+        # A text entry box to input the name
+        name_entry = ttk.Entry(new_window)
+        name_entry.grid(column=1, row=0)
+
+
+        #print(name)
+
+        # A button to go to the add buckets page
+        continue_btn = ttk.Button(new_window, text="Continue", command=lambda: goto_main())
+        continue_btn.grid(column=2, row=0)
+
+        def goto_main():
+            name = name_entry.get()
+            new_window.destroy()  # Destroy the new window we created
+
+            self.boards.append(name)  # Add the Board to the Boards list
+            print(self.buckets)  # Print the buckets list, this should actually save to database
+
+            # Delete the main root window
+            for widget in self.root.grid_slaves():
+                widget.grid_forget()
+
+            # Redraw the main root window
+            self.gen().grid(column=0, row=0)
 
     def add_board(self):
         '''
@@ -171,10 +206,17 @@ class ProjectSelection:
         # Create the Board
         b = Board(self.root, self.boards[index], self.buckets)
 
+        # Reparent the new Buckets
+        for bucket in self.buckets:
+            bucket.change_parent_to(b)
+
+        # Display the Board
+        b.gen().grid(row=0, column=0)
+
 
         #print("YOOOOO",self.root, self.boards[index],self.buckets)
         #print(b.title)
-        print(b.buckets, len(b.buckets))
+        #print(b.buckets, len(b.buckets))
 
         bins = b.buckets
         binsList = []
@@ -199,12 +241,7 @@ class ProjectSelection:
         # save board in database
         createTable(conn,query)
 
-        # Reparent the new Buckets
-        for bucket in self.buckets:
-            bucket.change_parent_to(b)
 
-        # Display the Board
-        b.gen().grid(row=0, column=0)
 
     def create_login_window(self):
         new_window = Tk()

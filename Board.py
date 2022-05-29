@@ -6,7 +6,7 @@ from Card import *
 from database import *
 import mysql.connector
 
-conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="pass")
 
 
 class Board:
