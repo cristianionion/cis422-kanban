@@ -171,6 +171,7 @@ for i in range(len(allBoards)):
 
 # Brad - wrapped this section in a function so we can (hopefully) 
 # use it in project selection to populate existing boards
+# not sure why the bucket name tuple always starts with 'title', 'description'
 def getAllData():
     allData = []
     for i in range(len(allBoards)):
