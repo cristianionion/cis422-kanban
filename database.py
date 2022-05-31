@@ -1,6 +1,4 @@
 """ 
-    
-
 
 database structure 
     
@@ -171,16 +169,22 @@ for i in range(len(allBoards)):
     allBoardsAndTables.append(selectAll(conn,tempBoardTitle))
     #print("\n")
 
-allData = []
-for i in range(len(allBoards)):
-    allData.append([])
-    allData[i].append((allBoards[i][0],),)
-    cols = getColumns(conn,allBoards[i][0])
-    for j in range(len(cols)):
-        allData[i][0] = allData[i][0] + ((cols[j][0]),) 
-        # at this point, each table has a list of one tuple containing boardTitle and colTitles
-    for k in range(len(allBoardsAndTables[i])):
-        allData[i].append(allBoardsAndTables[i][k])
+# Brad - wrapped this section in a function so we can (hopefully) 
+# use it in project selection to populate existing boards
+def getAllData():
+    allData = []
+    for i in range(len(allBoards)):
+        allData.append([])
+        allData[i].append((allBoards[i][0],),)
+        cols = getColumns(conn,allBoards[i][0])
+        for j in range(len(cols)):
+            allData[i][0] = allData[i][0] + ((cols[j][0]),) 
+            # at this point, each table has a list of one tuple containing boardTitle and colTitles
+        for k in range(len(allBoardsAndTables[i])):
+            allData[i].append(allBoardsAndTables[i][k])
+    return allData
+
+allData = getAllData()
 
 #print(allData[1])
 #print(allData[1][2][4])

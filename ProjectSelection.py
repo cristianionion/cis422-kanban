@@ -56,6 +56,13 @@ class ProjectSelection:
             add_board_btn.grid(column=1, row=2)
 
             # Displays all of the already created Boards
+            # see database.py for this function
+            allData = getAllData()
+            for i in range(len(allData)):
+                boardName = allData[i][0][0]  # this is the Board name index in the allData structure
+                boardName = boardName.replace("あ"," ") # replace kanji w/ whitespace
+                self.boards.append(boardName) # append to list of boards
+            # create buttons based on list above
             for i in range(len(self.boards)):
                 b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.enter_board(index))
                 b.grid(column=0, row=i+2) # Changes the row depending on its index
