@@ -64,9 +64,12 @@ class ProjectSelection:
                 self.boards.append(boardName) # append to list of boards
             # create buttons based on list above
             for i in range(len(self.boards)):
-                b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.enter_board(index))
-                b.grid(column=0, row=i+2) # Changes the row depending on its index
-
+                if self.boards[i] not in boardNamesList: # if the board was not loaded from the database
+                    b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.enter_board(index))
+                    b.grid(column=0, row=i+2) # Changes the row depending on its index
+                else: # board was loaded from database
+                    b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.load_board(self.boards[index]))
+                    b.grid(column=0, row=i+2) # Changes the row depending on its index
         # Returns the whole page
         return mainframe
 
@@ -212,7 +215,6 @@ class ProjectSelection:
 
         # Create the Board
         b = Board(self.root, self.boards[index], self.buckets)
-
         # Reparent the new Buckets
         for bucket in self.buckets:
             bucket.change_parent_to(b)
@@ -220,34 +222,68 @@ class ProjectSelection:
         # Display the Board
         b.gen().grid(row=0, column=0)
 
-
-        #print("YOOOOO",self.root, self.boards[index],self.buckets)
-        #print(b.title)
-        #print(b.buckets, len(b.buckets))
-
         bins = b.buckets
         binsList = []
         # this creates a string for db query 
         for i in range(len(b.buckets)):
             bins[i].title = str(bins[i].title)
-            print(type(bins[i].title))
+            print(type(bins[i].title), bins[i].title, bins[i])
             binsList.append(bins[i].title)
-            #print(bins[i].title)
-        #print(binsList)
-        #print("!!!!!", str(self.boards[index]))
         noSpaceBoard = str(self.boards[index]).replace(" ","あ")
-        print(noSpaceBoard)
         query = "CREATE TABLE IF NOT EXISTS "+ noSpaceBoard+ " (title VARCHAR(2000),description VARCHAR(2000),"
         for i in range(len(binsList)):
+            binName = binsList[i]
             if i == (len(binsList)-1):
-                query += binsList[i].replace(" ","あ")+" VARCHAR(2000))"
+                query += binName.replace(" ","あ")+" VARCHAR(2000))"
             else:
-                query += binsList[i].replace(" ","あ")+" VARCHAR(2000),"
+                query += binName.replace(" ","あ")+" VARCHAR(2000),"
         #print(query)
         
         # save board in database
         createTable(conn,query)
 
+    def load_board(self, boardTitle):
+        '''
+        Enters the Kanban Board that the user has selected
+        '''
+        # Clears the screen
+        for widget in self.root.grid_slaves():
+            widget.grid_forget()
+
+        tempIndex = boardNamesList.index(boardTitle)
+
+        binList = []
+        for bucket in range(len(allData[tempIndex][0])):
+            if (bucket != 0) and (bucket != 1)and (bucket != 2):
+                binList.append(allData[tempIndex][0][bucket].replace("あ", " "))
+        
+        
+        # Create the Board
+        b = Board(self.root, boardTitle,binList )
+
+
+        cards = []
+        for card in range(len(allData[tempIndex])):
+            if card != 0:
+                cc = Card(allData[tempIndex][card][0],allData[tempIndex][card][1])
+                cards.append(cc)
+
+        for i in range(len(binList)):
+            bb = Bucket(binList[i], [])
+            binList[i] = bb
+        
+        for card in range(len(cards)):
+            temp = card+1
+            c = cards[card]
+            binLoc = allData[tempIndex][temp].index("1")
+            binList[binLoc-2].add_card(c)
+
+        # Reparent the new Buckets
+        for bucket in binList:
+            bucket.change_parent_to(b)
+
+        # Display the Board
+        b.gen().grid(row=0, column=0)
 
 
     def create_login_window(self):

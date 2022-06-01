@@ -58,14 +58,6 @@ def addCard(conn,query, info):
     conn.commit()
 
 
-#def updateCard(conn,board,card,card_notes,cards_assignment):
-#    conn.database = "kanban"
-#    cursor = conn.cursor()
-#    query = "UPDATE "+str(board)+" SET card =%s, card_notes =%s, cards_assignment =%s"
-#    vals = (card,card_notes,cards_assignment)
-#    cursor.execute(query,vals)
-#    conn.commit()
-
 
 def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
     conn.database = "kanban"
@@ -194,7 +186,6 @@ allData = getAllData()
 #print(allData[0][0],len(allData[0][0]), type(allData[0][0]))
 #print(len(allData[1][1]), allData[1][0][0], allData[1][0][0].replace("あ"," "))
 
-#print("\n",allData)
 
 # how should i organize this?
 # list of lists of tuples, each list for a board,
@@ -203,20 +194,30 @@ allData = getAllData()
 
 
 
-
+boardNamesList = []
 for i in range(len(allData)): 
     bucketNames = []
     for j in range(len(allData[i][0])):
         if j == 0:
             boardName = allData[i][0][0]  # this is the Board's name
             boardName = boardName.replace("あ"," ")
-            print("\n",boardName)
+            boardNamesList.append(boardName)
+            #print("\n",boardName)
         else:
             bucketNames.append(allData[i][0][j].replace("あ"," ")) # the names of buckets for the respective board
-    print(bucketNames)
+    #print(bucketNames)
     for k in range(len(allData[i])):
         cardInfo = []
         if k>0:
             for card in range(len(allData[i][k])):
                 cardInfo.append(allData[i][k][card]) # all the info for each card.
-            print(cardInfo)
+            #print(cardInfo)
+#print("ALL BOARD NAMES: ", boardNamesList)
+#print("HOW IT LOOKS ALL TOGETHER ", allData)
+#print(allData[1][0])
+#print("ronaldo" in allData[1][0]) # true
+#a = boardNamesList.index('hopeffully it works')
+#print(len(allData[a][0]), allData[a][0])
+#print(boardNamesList.index('hopeffully it works'))
+#print(allData[a][1], len(allData[a][1]), len(allData[a]))
+#print('1' in allData[a][1], allData[a][1].index('1'))
