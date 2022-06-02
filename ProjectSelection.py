@@ -61,13 +61,14 @@ class ProjectSelection:
             for i in range(len(allData)):
                 boardName = allData[i][0][0]  # this is the Board name index in the allData structure
                 boardName = boardName.replace("あ"," ") # replace kanji w/ whitespace
-                self.boards.append(boardName) # append to list of boards
+                if boardName not in self.boards:
+                    self.boards.append(boardName) # append to list of boards
             # create buttons based on list above
             for i in range(len(self.boards)):
                 if self.boards[i] not in boardNamesList: # if the board was not loaded from the database
                     b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.enter_board(index))
                     b.grid(column=0, row=i+2) # Changes the row depending on its index
-                else: # board was loaded from database
+                elif (self.boards[i] in boardNamesList): # board was loaded from database
                     b = ttk.Button(mainframe, text=self.boards[i], command=lambda index=i: self.load_board(self.boards[index]))
                     b.grid(column=0, row=i+2) # Changes the row depending on its index
         # Returns the whole page

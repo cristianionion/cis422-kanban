@@ -37,6 +37,7 @@ def createTable(conn, query):
     conn.database = "kanban"
     cursor = conn.cursor()
     #query = "CREATE TABLE IF NOT EXISTS "+ str(board)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000))"
+    #print("QUERY",query)
     cursor.execute(query)
 
 #board = "FakeBoard"
