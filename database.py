@@ -16,7 +16,6 @@ each card is a new row in table:
 
 """
 
-from winreg import QueryReflectionKey
 import mysql.connector
 
 #from Board import *
@@ -154,7 +153,11 @@ def getColumns(conn,board):
 
 
 allBoards = getTables(conn)
-#print(allBoards)
+print(allBoards)
+
+#for i in range(len(allBoards)):
+    #deleteBoard(conn,allBoards[i][0])
+    #print(allBoards[i][0], type(allBoards[i][0]))
 
 allBoardsAndTables = []
 for i in range(len(allBoards)):
@@ -182,8 +185,8 @@ allData = getAllData()
 
 #print(allData[1])
 #print(allData[1][2][4])
-#for i in range(len(allData)):
-#    print(allData[i], "\n")
+for i in range(len(allData)):
+    print(allData[i], "\n")
 #print(allData[0][0],len(allData[0][0]), type(allData[0][0]))
 #print(len(allData[1][1]), allData[1][0][0], allData[1][0][0].replace("あ"," "))
 

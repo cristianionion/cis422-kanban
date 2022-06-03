@@ -29,6 +29,7 @@ class ProjectSelection:
         '''
         # A frame that stores the whole page
         mainframe = ttk.Frame(self.root)
+        self.buckets = []
 
         # Case 1: User is not logged in and must do so
         if self.name is None:
@@ -87,6 +88,8 @@ class ProjectSelection:
 
 
         #print(name)
+        name = name_entry.get()
+        print("!!!!!!!!!!!!!!", name)
 
         # A button to go to the add buckets page
         continue_btn = ttk.Button(new_window, text="Continue", command=lambda: goto_main())
@@ -98,6 +101,12 @@ class ProjectSelection:
 
             self.boards.append(name)  # Add the Board to the Boards list
             print(self.buckets)  # Print the buckets list, this should actually save to database
+            print("**************", self.buckets, name)
+            if len(self.buckets) == 0:
+                print("INDEX: ", self.boards[-1])
+                self.enter_board(-1)
+
+            
 
             # Delete the main root window
             for widget in self.root.grid_slaves():
@@ -196,6 +205,20 @@ class ProjectSelection:
                             widget.grid_forget()
 
                         # Redraw the main root window
+                        bins = self.buckets
+                        binsList = []
+                        for i in range(len(self.buckets)):
+                            bins[i].title = str(bins[i].title)
+                            binsList.append(bins[i].title)
+                        noSpaceBoard = str(self.boards[-1]).replace(" ","あ")
+                        query = "CREATE TABLE IF NOT EXISTS "+ noSpaceBoard+ " (title VARCHAR(2000),description VARCHAR(2000),"
+                        for j in range(len(binsList)):
+                            binName = binsList[j]
+                            if j == (len(binsList)-1):
+                                query += binName.replace(" ","あ")+" VARCHAR(2000))"
+                            else:
+                                query += binName.replace(" ","あ")+" VARCHAR(2000),"
+                        createTable(conn, query)
                         self.gen().grid(column=0, row=0)
 
     def enter_board(self, index):
@@ -228,7 +251,7 @@ class ProjectSelection:
         # this creates a string for db query 
         for i in range(len(b.buckets)):
             bins[i].title = str(bins[i].title)
-            print(type(bins[i].title), bins[i].title, bins[i])
+            print("AHAHAHAHAHA:",type(bins[i].title), bins[i].title, bins[i])
             binsList.append(bins[i].title)
         noSpaceBoard = str(self.boards[index]).replace(" ","あ")
         query = "CREATE TABLE IF NOT EXISTS "+ noSpaceBoard+ " (title VARCHAR(2000),description VARCHAR(2000),"
