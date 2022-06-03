@@ -28,9 +28,10 @@ conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd=
 def createDatabase(conn):
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS kanban")
+    cursor.close()
+    conn.commit()
 
 createDatabase(conn)
-
 
 def createTable(conn, query):
     conn.database = "kanban"
@@ -38,6 +39,8 @@ def createTable(conn, query):
     #query = "CREATE TABLE IF NOT EXISTS "+ str(board)+" (card VARCHAR(2000),card_notes VARCHAR(2000),cards_assignment VARCHAR(2000))"
     #print("QUERY",query)
     cursor.execute(query)
+    cursor.close()
+    conn.commit()
 
 #board = "FakeBoard"
 #createTable(conn, board)
@@ -55,11 +58,10 @@ def addCard(conn,query, info):
     #vals = (card, card_notes,cards_assignment)
     #print(query, vals)
     cursor.execute(query,vals)
+    cursor.close()
     conn.commit()
 
-
-
-def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
+def cardMoved(conn, board, cardTitle, oldLocation, newLocation):
     conn.database = "kanban"
     cursor = conn.cursor()
     # title and desc don't change, remaining are buckets on board
@@ -69,9 +71,8 @@ def cardMoved(conn, board, cardTitle,oldLocation, newLocation):
     #print(query)
     vals = (False,True, str(cardTitle))
     cursor.execute(query,vals)
+    cursor.close()
     conn.commit()
-
-
 
 # returns all data for a specific board
 def selectAll(conn,board):
@@ -80,11 +81,9 @@ def selectAll(conn,board):
     query = "SELECT * FROM "+str(board)
     #print(query)
     cursor.execute(query)
-    return cursor.fetchall()
-
-
-
-
+    result = cursor.fetchall()
+    cursor.close()
+    return result
 
 # returns all data for a specific card
 def selectOne(conn,board,card):
@@ -93,9 +92,9 @@ def selectOne(conn,board,card):
     query = "SELECT * FROM "+str(board)+" WHERE card = %s"
     adr = (card,)
     cursor.execute(query,adr)
-    return cursor.fetchone()
-
-
+    result = cursor.fetchone()
+    cursor.close()
+    return result
 
 # deletes specific card from DB
 def deleteCard(conn,board,card):
@@ -104,9 +103,8 @@ def deleteCard(conn,board,card):
     query = "DELETE FROM "+str(board)+" WHERE card =%s"
     adr = (card,)
     cursor.execute(query,adr)
+    cursor.close()
     conn.commit()
-
-
 
 # deletes a whole board from DB
 def deleteBoard(conn,board):
@@ -114,8 +112,8 @@ def deleteBoard(conn,board):
     cursor = conn.cursor()
     query = "DROP TABLE IF EXISTS "+str(board)
     cursor.execute(query)
+    cursor.close()
     conn.commit()
-
 
 #https://www.geeksforgeeks.org/how-to-add-a-column-to-a-mysql-table-in-python/
 # inserts new bin into DB for specific kanban board
@@ -124,8 +122,8 @@ def addBin(conn,board, bin):
     cursor = conn.cursor()
     query = "ALTER TABLE "+str(board)+" ADD IF NOT EXISTS "+str(bin)+" VARCHAR(100)"
     cursor.execute(query)
+    cursor.close()
     conn.commit()
-
 
 # deletes a bin from a board in DB
 def deleteBin(conn,board,bin):
@@ -133,25 +131,26 @@ def deleteBin(conn,board,bin):
     cursor = conn.cursor()
     query = "ALTER TABLE "+str(board)+" DROP COLUMN IF EXISTS "+str(bin)
     cursor.execute(query)
+    cursor.close()
     conn.commit()
 
 def getTables(conn):
     conn.database = "kanban"
-    mycursor = conn.cursor()
-    mycursor.execute("SHOW TABLES FROM kanban")
-    return mycursor.fetchall()
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES FROM kanban")
+    result = cursor.fetchall()
+    cursor.close()
+    return result
 
 def getColumns(conn,board):
     conn.database = "kanban"
-    mycursor = conn.cursor()
+    cursor = conn.cursor()
     query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'kanban' AND TABLE_NAME = '"+str(board)+ "'"
-    mycursor.execute(query)
-    return mycursor.fetchall()
+    cursor.execute(query)
+    result = cursor.fetchall()
+    cursor.close()
+    return result    
     
-
-
-
-
 allBoards = getTables(conn)
 print(allBoards)
 
@@ -190,13 +189,10 @@ for i in range(len(allData)):
 #print(allData[0][0],len(allData[0][0]), type(allData[0][0]))
 #print(len(allData[1][1]), allData[1][0][0], allData[1][0][0].replace("あ"," "))
 
-
 # how should i organize this?
 # list of lists of tuples, each list for a board,
 #                        tuple1 = boardtitle+cols, tuple2(+) = card data
 # [ [ (BoardTitle, Col1,Col2,Col3,...), (cardTitle1,cardDesc1,bin,bin,...)]]
-
-
 
 boardNamesList = []
 for i in range(len(allData)): 
