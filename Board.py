@@ -6,7 +6,7 @@ from Card import *
 from database import *
 import mysql.connector
 
-conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
+conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="pass")
 
 
 class Board:
@@ -123,6 +123,10 @@ class Board:
         # A Button that adds a new Card to the Board
         add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card)
         add_card.grid(column=1, row=0)
+
+        # button to delete the entire board
+        add_card = ttk.Button(boardframe, text="Delete Board")
+        add_card.grid(column=1, row=2)
 
         # Returns the whole Board's visuals
         return boardframe
