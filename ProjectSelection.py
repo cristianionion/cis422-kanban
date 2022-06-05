@@ -382,9 +382,9 @@ class ProjectSelection:
         user_type_text.grid(column=0, row=2)
 
         user_type = IntVar(new_window) # need to give the window as an arg for this to work
-        student_btn = ttk.Radiobutton(window_frame, text = "Student", variable = user_type, value = 0)
+        student_btn = ttk.Radiobutton(window_frame, text = "Student", variable = user_type, value = 1)
         student_btn.grid(column = 1, row = 2)
-        instructor_btn = ttk.Radiobutton(window_frame, text = "Instructor", variable = user_type, value = 1)
+        instructor_btn = ttk.Radiobutton(window_frame, text = "Instructor", variable = user_type, value = 0)
         instructor_btn.grid(column = 2, row = 2)
 
         register_button = ttk.Button(window_frame,
@@ -399,11 +399,23 @@ class ProjectSelection:
 
     def _register(self, name: str, password: str, user_type: int, new_window):
         self.name = name
-        # TODO: check un and pw for allowed chars
-        # TODO: query DB to check for duplicate account(s)
-        # TODO: add account to DB
-        new_window.destroy()
-        for widget in self.root.grid_slaves():
-            widget.grid_forget()
+        # check un and pw for whitepsace
+        if (' ' in name or ' ' in password):
+            err = Toplevel(new_window)
+            err.geometry("700x250")
+            err.title("Registration Error")
+            #Create a label in Toplevel window
+            Label(err, text= "Error: you cannot use spaces in a username or password")
+        else:
+            # setup user DB and users table
+            createUserDB()
+            createUsersTable()  
+            # query DB to check for duplicate account(s)
+            if checkForUser((name, password, user_type)):
+                # add account to DB
+                insertUser((name, password, user_type))
+                new_window.destroy()
+                for widget in self.root.grid_slaves():
+                    widget.grid_forget()
 
-        self.gen().grid(column=0, row=0)
+                self.gen().grid(column=0, row=0)
