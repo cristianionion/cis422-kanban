@@ -70,6 +70,11 @@ class Board:
 
             # Redraws the visuals for the whole Board 
             boardholder = self.gen().grid(column=0, row=0)
+    
+    def delete(self):
+        self.root.destroy()
+        deleteBoard(conn, self.title)
+
 
     def gen(self):
         '''
@@ -125,8 +130,8 @@ class Board:
         add_card.grid(column=1, row=0)
 
         # button to delete the entire board
-        add_card = ttk.Button(boardframe, text="Delete Board")
-        add_card.grid(column=1, row=2)
+        delete_board = ttk.Button(boardframe, text="Delete Board",command= lambda : self.delete())
+        delete_board.grid(column=1, row=2)
 
         # Returns the whole Board's visuals
         return boardframe
