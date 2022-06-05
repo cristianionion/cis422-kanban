@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from typing import List
 from Card import *
+from ProjectSelection import *
 from database import *
 import mysql.connector
 
@@ -70,6 +71,17 @@ class Board:
 
             # Redraws the visuals for the whole Board 
             boardholder = self.gen().grid(column=0, row=0)
+    
+    def delete(self):
+        # Deletes Board from database
+        deleteBoard(conn, self.title)
+
+        # Deletes the current frame from root
+        for widget in self.root.grid_slaves():
+            widget.grid_forget()
+
+        # Displays the Project Selection View
+        ProjectSelection(self.root).gen().grid(column=0, row=0)
 
     def gen(self):
         '''
@@ -123,6 +135,10 @@ class Board:
         # A Button that adds a new Card to the Board
         add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card)
         add_card.grid(column=1, row=0)
+
+        # button to delete the entire board
+        delete_board = ttk.Button(boardframe, text="Delete Board",command= lambda : self.delete())
+        delete_board.grid(column=1, row=2)
 
         # Returns the whole Board's visuals
         return boardframe

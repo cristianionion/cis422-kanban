@@ -110,7 +110,8 @@ def deleteCard(conn,board,card):
 def deleteBoard(conn,board):
     conn.database = "kanban"
     cursor = conn.cursor()
-    query = "DROP TABLE IF EXISTS "+str(board)
+    query = "DROP TABLE IF EXISTS "+str(board).replace(" ","あ")
+    print("AHAHA", query)
     cursor.execute(query)
     cursor.close()
     conn.commit()
