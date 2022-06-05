@@ -5,6 +5,7 @@ import tkinter
 from Board import *
 from Bucket import *
 from database import *
+from user import *
 import mysql.connector
 
 conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
@@ -400,20 +401,21 @@ class ProjectSelection:
     def _register(self, name: str, password: str, user_type: int, new_window):
         self.name = name
         # check un and pw for whitepsace
-        if (' ' in name or ' ' in password):
+        if ((' ' in name) or (' ' in password)):
             err = Toplevel(new_window)
-            err.geometry("700x250")
+            err.geometry("400x100")
             err.title("Registration Error")
             #Create a label in Toplevel window
-            Label(err, text= "Error: you cannot use spaces in a username or password")
+            errLab = Label(err, text= "Error: you cannot use spaces in a username or password").pack()
+            
         else:
             # setup user DB and users table
-            createUserDB()
-            createUsersTable()  
+            createUserDB(conn)
+            createUsersTable(conn)  
             # query DB to check for duplicate account(s)
-            if checkForUser((name, password, user_type)):
+            if checkForUser(conn, (name, password, user_type)):
                 # add account to DB
-                insertUser((name, password, user_type))
+                insertUser(conn, (name, password, user_type))
                 new_window.destroy()
                 for widget in self.root.grid_slaves():
                     widget.grid_forget()
