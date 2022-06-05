@@ -81,7 +81,7 @@ class Board:
             widget.grid_forget()
 
         # Displays the Project Selection View
-        ProjectionSelection(self.root).gen().grid(column=0, row=0)
+        ProjectSelection(self.root).gen().grid(column=0, row=0)
 
     def gen(self):
         '''
