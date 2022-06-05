@@ -27,7 +27,7 @@ conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd=
 
 def createDatabase(conn):
     cursor = conn.cursor()
-    cursor.execute("CREATE DATABASE IF NOT EXISTS kanban")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS kanban DEFAULT CHARACTER SET utf8")
     cursor.close()
     conn.commit()
 
@@ -248,7 +248,7 @@ def createUsersTable():
     cursor = conn.cursor()
     # define query
     createUsersTableQuery = '''
-        USE `users` ;
+        USE `user` ;
         CREATE TABLE IF NOT EXISTS `user`.`users` (
             `userID` INT NOT NULL AUTO_INCREMENT,
             `username` VARCHAR(255) NULL,
