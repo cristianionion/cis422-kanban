@@ -51,7 +51,7 @@ class Board:
             else:
                 query += "%s,"
         info = (len(binsList), name, desc)
-        print+("AHNBSBSBSBSBBSSBAOL<MHKJHO", query, info)
+        print("AHNBSBSBSBSBBSSBAOL<MHKJHO", query, info)
         addCard(conn, query, info)
 
         # Checks if name and desc are not empty
