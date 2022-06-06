@@ -40,9 +40,10 @@ class ProjectSelection:
             login_btn = ttk.Button(mainframe, text="Login", command=self.create_login_window)
             login_btn.grid(column=0, row=0)
 
+            # SQL errors with user DB - this button is disabled
             # A button to register an account
-            register_btn = ttk.Button(mainframe, text="Register", command=self.create_register_window)
-            register_btn.grid(column=0, row=1)
+            # register_btn = ttk.Button(mainframe, text="Register", command=self.create_register_window)
+            # register_btn.grid(column=0, row=1)
 
         # Case 2: User is already logged in
         else:
@@ -396,6 +397,7 @@ class ProjectSelection:
         student_btn.grid(column = 1, row = 2)
         instructor_btn = ttk.Radiobutton(window_frame, text = "Instructor", variable = user_type, value = 0)
         instructor_btn.grid(column = 2, row = 2)
+
 
         register_button = ttk.Button(window_frame,
                                   text="Register",
