@@ -64,7 +64,7 @@ class Board:
 
             # Creates a new Card and adds it to the Cards list in the first Bucket
             card = Card(name, desc, usertype)
-            self.buckets[0].add_card(card, usertype)
+            self.buckets[0].add_card(card)
 
             # Deletes the whole Board's visuals
             for widget in self.root.grid_slaves():
