@@ -4,6 +4,7 @@ from tkinter import ttk
 from typing import List
 from Card import *
 from database import *
+import ProjectSelection
 import mysql.connector
 
 conn = mysql.connector.connect(host="localhost", port=3306, user="root", passwd="")
@@ -79,6 +80,8 @@ class Board:
         # Deletes the current frame from root
         for widget in self.root.grid_slaves():
             widget.grid_forget()
+
+        ProjectSelection.ProjectSelection(self.root).gen().grid(column=0, row=0)
 
 
     def gen(self):
