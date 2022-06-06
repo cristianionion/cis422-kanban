@@ -183,6 +183,45 @@ def getAllData():
 
 allData = getAllData()
 
+
+def tbd(conn):
+    cursor = conn.cursor()
+    cursor.execute("CREATE DATABASE IF NOT EXISTS tobedeleted DEFAULT CHARACTER SET utf8")
+    cursor.close()
+    conn.commit()
+
+
+def createDeleteTable(conn, board):
+    conn.database = "tobedeleted"
+    cursor = conn.cursor()
+    query = "CREATE TABLE IF NOT EXISTS " + str(board).replace(" ","あ") +" (title VARCHAR(2000))"
+    #print("QUERY",query)
+    cursor.execute(query)
+    cursor.close()
+    conn.commit()
+
+tbd(conn)
+
+def deletedeleteBoard(conn,board):
+    conn.database = "kanban"
+    cursor = conn.cursor()
+    query = "DROP TABLE IF EXISTS "+str(board).replace(" ","あ")
+    print("AHAHA", query)
+    cursor.execute(query)
+    cursor.close()
+    conn.commit()
+
+
+def getDeleteTables(conn):
+    conn.database = "tobedeleted"
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES FROM tobedeleted")
+    result = cursor.fetchall()
+    cursor.close()
+    return result
+
+print("AL:LSS:, ", getTables(conn)[0][0])# str
+
 #print(allData[1])
 #print(allData[1][2][4])
 for i in range(len(allData)):

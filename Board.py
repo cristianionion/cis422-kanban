@@ -3,7 +3,6 @@ from tkinter import ttk
 
 from typing import List
 from Card import *
-from ProjectSelection import *
 from database import *
 import mysql.connector
 
@@ -52,6 +51,7 @@ class Board:
             else:
                 query += "%s,"
         info = (len(binsList), name, desc)
+        print+("AHNBSBSBSBSBBSSBAOL<MHKJHO", query, info)
         addCard(conn, query, info)
 
         # Checks if name and desc are not empty
@@ -73,15 +73,13 @@ class Board:
             boardholder = self.gen().grid(column=0, row=0)
     
     def delete(self):
-        # Deletes Board from database
-        deleteBoard(conn, self.title)
 
+        #deleteBoard(conn, self.title)
+        createDeleteTable(conn, self.title)
         # Deletes the current frame from root
         for widget in self.root.grid_slaves():
             widget.grid_forget()
 
-        # Displays the Project Selection View
-        ProjectSelection(self.root).gen().grid(column=0, row=0)
 
     def gen(self):
         '''
