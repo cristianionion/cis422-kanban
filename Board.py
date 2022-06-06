@@ -116,20 +116,18 @@ class Board:
         # Adds the bucketholder frame onto the Board
         bucketholder.grid(column=0, row=2)
 
-        # A variable to hold the current name in name_entry
-        name = StringVar()
-        self.new_name = name
-
         if usertype == 1:
+            # A variable to hold the current name in name_entry
+            name = StringVar()
+            self.new_name = name
             # The name text entry box
             name_entry = ttk.Entry(boardframe, textvariable=name)
             name_entry.grid(column=0, row=0, sticky="e")
 
-        # A variable to hold the current description in desc_entry
-        desc = StringVar()
-        self.new_desc = desc
+            # A variable to hold the current description in desc_entry
+            desc = StringVar()
+            self.new_desc = desc
 
-        if usertype == 1:
             # The description text entry box
             desc_entry = ttk.Entry(boardframe, textvariable=desc)
             desc_entry.grid(column=0, row=1, sticky="e")
