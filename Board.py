@@ -17,14 +17,15 @@ class Board:
     the Tkinter objects that display its information to the user.
     '''
 
-    def __init__(self, root, title: str, buckets: List["bucket"]):
+    def __init__(self, root, title: str, buckets: List["bucket"], usertype):
         self.root = root # The root Tkinter object
         self.title = title
         self.buckets = buckets # A list of the Buckets in this Board
         self.new_name = None # Is later used to store the name of a new Card
         self.new_desc = None # Is later used to store the description of a new Card
+        self.usertype = usertype
 
-    def add_card(self, usertype):
+    def add_card(self):
         '''
         A method that gets called when the add card button is pressed.
         It is used to add a Card to the first Bucket.
@@ -63,7 +64,7 @@ class Board:
             self.new_desc.set("")
 
             # Creates a new Card and adds it to the Cards list in the first Bucket
-            card = Card(name, desc, usertype)
+            card = Card(name, desc)
             self.buckets[0].add_card(card)
 
             # Deletes the whole Board's visuals
@@ -71,7 +72,7 @@ class Board:
                 widget.grid_forget()
 
             # Redraws the visuals for the whole Board 
-            boardholder = self.gen(usertype).grid(column=0, row=0)
+            boardholder = self.gen().grid(column=0, row=0)
     
     def delete(self):
 
@@ -83,7 +84,7 @@ class Board:
 
         ProjectSelection.ProjectSelection(self.root).gen().grid(column=0, row=0)
 
-    def gen(self, usertype: int):
+    def gen(self):
         '''
         Responsible for creating the Tkinter object that will be used
         to display the Board to the user. This method is recursive. It
@@ -116,7 +117,7 @@ class Board:
         # Adds the bucketholder frame onto the Board
         bucketholder.grid(column=0, row=2)
 
-        if usertype == 1:
+        if self.usertype == 1:
             # A variable to hold the current name in name_entry
             name = StringVar()
             self.new_name = name
@@ -133,7 +134,7 @@ class Board:
             desc_entry.grid(column=0, row=1, sticky="e")
 
             # A Button that adds a new Card to the Board
-            add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card(usertype))
+            add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card())
             add_card.grid(column=1, row=0)
 
             # button to delete the entire board

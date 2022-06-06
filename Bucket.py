@@ -44,7 +44,7 @@ class Bucket:
             card = self.cards.pop(j) # Get the Card out of the list of Cards
             self.parent.buckets[i-1].add_card(card) # Add the Card in its new position
 
-            self.parent.gen(usertype).grid(column=0, row=0) # Redraw the Board
+            self.parent.gen().grid(column=0, row=0) # Redraw the Board
 
 
             bins = self.parent.buckets
@@ -72,7 +72,7 @@ class Bucket:
             card = self.cards.pop(j) # Get the Card out of the list of Cards
             self.parent.buckets[i+1].add_card(card) # Add the Card in its new position
 
-            self.parent.gen(usertype).grid(column=0, row=0) # Redraw the Board
+            self.parent.gen().grid(column=0, row=0) # Redraw the Board
 
 
             

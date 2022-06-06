@@ -7,10 +7,9 @@ class Card:
     to itself and also handles its own rendering.
     '''
 
-    def __init__(self, title: str, desc: str, user_type):
+    def __init__(self, title: str, desc: str):
         self.title = title
         self.desc = desc
-        self.user_type = user_type
         self.parent = None # A reference to its parent (a bucket)
 
     def change_parent_to(self, bucket: "Bucket"):
@@ -24,13 +23,13 @@ class Card:
         '''
         Moves the Card one bucket to the left.
         '''
-        self.parent.shift_left(self, self.user_type)
+        self.parent.shift_left(self)
 
     def right(self):
         '''
         Moves the Card one bucket to the right.
         '''
-        self.parent.shift_right(self, self.user_type)
+        self.parent.shift_right(self)
 
     def view(self, cardframe):
         '''

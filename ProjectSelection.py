@@ -242,13 +242,13 @@ class ProjectSelection:
                        ]
 
         # Create the Board
-        b = Board(self.root, self.boards[index], self.buckets)
+        b = Board(self.root, self.boards[index], self.buckets, self.user_type)
         # Reparent the new Buckets
         for bucket in self.buckets:
             bucket.change_parent_to(b)
 
         # Display the Board
-        b.gen(self.user_type).grid(row=0, column=0)
+        b.gen().grid(row=0, column=0)
 
         bins = b.buckets
         binsList = []
@@ -287,13 +287,13 @@ class ProjectSelection:
         
         
         # Create the Board
-        b = Board(self.root, boardTitle,binList )
+        b = Board(self.root, boardTitle,binList, self.user_type)
 
 
         cards = []
         for card in range(len(allData[tempIndex])):
             if card != 0:
-                cc = Card(allData[tempIndex][card][0],allData[tempIndex][card][1], self.user_type)
+                cc = Card(allData[tempIndex][card][0],allData[tempIndex][card][1])
                 cards.append(cc)
 
         for i in range(len(binList)):
@@ -311,7 +311,7 @@ class ProjectSelection:
             bucket.change_parent_to(b)
 
         # Display the Board
-        b.gen(self.user_type).grid(row=0, column=0)
+        b.gen().grid(row=0, column=0)
 
 
     def create_login_window(self):
