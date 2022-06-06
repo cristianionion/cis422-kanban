@@ -22,6 +22,7 @@ class ProjectSelection:
         self.boards = [] # A list of the Boards
         self.name = None # The name of a new Bucket
         self.buckets = [] # A list of the Buckets for a new Board
+        self.user_type = None
 
     def gen(self):
         '''
@@ -50,12 +51,13 @@ class ProjectSelection:
             user_greeting = ttk.Label(mainframe, text=f"Hello, {self.name}!")
             user_greeting.grid(column=0, row=0)
 
-            # A button to create a new board
-            add_board_btn = ttk.Button(mainframe, text="Create New Custom Board", command=self.add_board)
-            add_board_btn.grid(column=1, row=1)
+            if self.user_type == 1:
+                # A button to create a new board
+                add_board_btn = ttk.Button(mainframe, text="Create New Custom Board", command=self.add_board)
+                add_board_btn.grid(column=1, row=1)
 
-            add_board_btn = ttk.Button(mainframe, text="Create New Default Board", command=self.add_def_board)
-            add_board_btn.grid(column=1, row=2)
+                add_board_btn = ttk.Button(mainframe, text="Create New Default Board", command=self.add_def_board)
+                add_board_btn.grid(column=1, row=2)
 
             # Displays all of the already created Boards
             # see database.py for this function
@@ -321,10 +323,16 @@ class ProjectSelection:
         user_type_text.grid(column=0, row=0)
 
         user_type = IntVar(new_window)  # need to give the window as an arg for this to work
-        student_btn = ttk.Radiobutton(window_frame, text="Student", variable=user_type, value=0)
+        student_btn = ttk.Radiobutton(window_frame, text="Student", variable=user_type, value=0, command= lambda: studentval())
         student_btn.grid(column=1, row=0)
-        instructor_btn = ttk.Radiobutton(window_frame, text="Instructor", variable=user_type, value=1)
+        instructor_btn = ttk.Radiobutton(window_frame, text="Instructor", variable=user_type, value=1, command = lambda: instructorval())
         instructor_btn.grid(column=2, row=0)
+
+        def studentval():
+            self.user_type = 0
+
+        def instructorval():
+            self.user_type = 1
 
         name_text = ttk.Label(window_frame, text="Enter Name:")
         name_text.grid(column=0, row=1)
