@@ -51,6 +51,7 @@ class ProjectSelection:
             user_greeting = ttk.Label(mainframe, text=f"Hello, {self.name}!")
             user_greeting.grid(column=0, row=0)
 
+            # check if the user is teacher or student
             if self.user_type == 1:
                 # A button to create a new board
                 add_board_btn = ttk.Button(mainframe, text="Create New Custom Board", command=self.add_board)
@@ -247,7 +248,7 @@ class ProjectSelection:
             bucket.change_parent_to(b)
 
         # Display the Board
-        b.gen().grid(row=0, column=0)
+        b.gen(self.user_type).grid(row=0, column=0)
 
         bins = b.buckets
         binsList = []
@@ -310,7 +311,7 @@ class ProjectSelection:
             bucket.change_parent_to(b)
 
         # Display the Board
-        b.gen().grid(row=0, column=0)
+        b.gen(self.user_type).grid(row=0, column=0)
 
 
     def create_login_window(self):

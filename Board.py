@@ -24,7 +24,7 @@ class Board:
         self.new_name = None # Is later used to store the name of a new Card
         self.new_desc = None # Is later used to store the description of a new Card
 
-    def add_card(self):
+    def add_card(self, usertype):
         '''
         A method that gets called when the add card button is pressed.
         It is used to add a Card to the first Bucket.
@@ -71,7 +71,7 @@ class Board:
                 widget.grid_forget()
 
             # Redraws the visuals for the whole Board 
-            boardholder = self.gen().grid(column=0, row=0)
+            boardholder = self.gen(usertype).grid(column=0, row=0)
     
     def delete(self):
 
@@ -83,8 +83,7 @@ class Board:
 
         ProjectSelection.ProjectSelection(self.root).gen().grid(column=0, row=0)
 
-
-    def gen(self):
+    def gen(self, usertype: int):
         '''
         Responsible for creating the Tkinter object that will be used
         to display the Board to the user. This method is recursive. It
@@ -121,25 +120,27 @@ class Board:
         name = StringVar()
         self.new_name = name
 
-        # The name text entry box
-        name_entry = ttk.Entry(boardframe, textvariable=name)
-        name_entry.grid(column=0, row=0, sticky="e")
+        if usertype == 1:
+            # The name text entry box
+            name_entry = ttk.Entry(boardframe, textvariable=name)
+            name_entry.grid(column=0, row=0, sticky="e")
 
         # A variable to hold the current description in desc_entry
         desc = StringVar()
         self.new_desc = desc
 
-        # The description text entry box
-        desc_entry = ttk.Entry(boardframe, textvariable=desc)
-        desc_entry.grid(column=0, row=1, sticky="e")
+        if usertype == 1:
+            # The description text entry box
+            desc_entry = ttk.Entry(boardframe, textvariable=desc)
+            desc_entry.grid(column=0, row=1, sticky="e")
 
-        # A Button that adds a new Card to the Board
-        add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card)
-        add_card.grid(column=1, row=0)
+            # A Button that adds a new Card to the Board
+            add_card = ttk.Button(boardframe, text="Add Card", command=self.add_card(usertype))
+            add_card.grid(column=1, row=0)
 
-        # button to delete the entire board
-        delete_board = ttk.Button(boardframe, text="Delete Board",command= lambda : self.delete())
-        delete_board.grid(column=1, row=2)
+            # button to delete the entire board
+            delete_board = ttk.Button(boardframe, text="Delete Board",command= lambda : self.delete())
+            delete_board.grid(column=1, row=2)
 
         # Returns the whole Board's visuals
         return boardframe
