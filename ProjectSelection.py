@@ -293,7 +293,7 @@ class ProjectSelection:
         cards = []
         for card in range(len(allData[tempIndex])):
             if card != 0:
-                cc = Card(allData[tempIndex][card][0],allData[tempIndex][card][1])
+                cc = Card(allData[tempIndex][card][0],allData[tempIndex][card][1], self.user_type)
                 cards.append(cc)
 
         for i in range(len(binList)):
