@@ -7,9 +7,10 @@ class Card:
     to itself and also handles its own rendering.
     '''
 
-    def __init__(self, title: str, desc: str):
+    def __init__(self, title: str, desc: str, user_type):
         self.title = title
         self.desc = desc
+        self.user_type = user_type
         self.parent = None # A reference to its parent (a bucket)
 
     def change_parent_to(self, bucket: "Bucket"):
@@ -23,13 +24,13 @@ class Card:
         '''
         Moves the Card one bucket to the left.
         '''
-        self.parent.shift_left(self)
+        self.parent.shift_left(self, self.user_type)
 
     def right(self):
         '''
         Moves the Card one bucket to the right.
         '''
-        self.parent.shift_right(self)
+        self.parent.shift_right(self, self.user_type)
 
     def view(self, cardframe):
         '''
@@ -96,7 +97,7 @@ class Card:
         desc.grid(column=0, row=1, sticky="nsew")
 
         # button to view card induvidually in a new 'popup' window
-        view_btn = ttk.Button(cardframe, text = "View Card Induvidually", style='CardTitle.TLabel', 
+        view_btn = ttk.Button(cardframe, text = "View Card Individually", style='CardTitle.TLabel',
                                 command = lambda: self.view(cardframe))
         view_btn.grid(column = 0, row = 2, sticky = "nsew")
 
