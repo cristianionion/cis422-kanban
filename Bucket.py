@@ -27,7 +27,7 @@ class Bucket:
         '''
         self.parent = board
 
-    def shift_left(self, c: "Card", usertype):
+    def shift_left(self, c: "Card"):
         '''
         Takes a Card and moves it one bucket to the left.
         '''
@@ -55,7 +55,7 @@ class Bucket:
             newLoc = binsList[i-1]
             cardMoved(conn,self.parent.title,card.title,oldLoc,newLoc)
 
-    def shift_right(self, c: "Card", usertype):
+    def shift_right(self, c: "Card"):
         '''
         Takes a Card and moves it one bucket to the right.
         '''

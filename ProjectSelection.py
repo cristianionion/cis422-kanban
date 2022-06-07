@@ -22,7 +22,6 @@ class ProjectSelection:
         self.boards = [] # A list of the Boards
         self.name = None # The name of a new Bucket
         self.buckets = [] # A list of the Buckets for a new Board
-        self.user_type = None
 
     def gen(self):
         '''
@@ -53,13 +52,13 @@ class ProjectSelection:
             user_greeting.grid(column=0, row=0)
 
             # check if the user is teacher or student
-            if self.user_type == 1:
+            #if self.user_type == 1:
                 # A button to create a new board
-                add_board_btn = ttk.Button(mainframe, text="Create New Custom Board", command=self.add_board)
-                add_board_btn.grid(column=1, row=1)
+            add_board_btn = ttk.Button(mainframe, text="Create New Custom Board", command=self.add_board)
+            add_board_btn.grid(column=1, row=1)
 
-                add_board_btn = ttk.Button(mainframe, text="Create New Default Board", command=self.add_def_board)
-                add_board_btn.grid(column=1, row=2)
+            add_board_btn = ttk.Button(mainframe, text="Create New Default Board", command=self.add_def_board)
+            add_board_btn.grid(column=1, row=2)
 
             # Displays all of the already created Boards
             # see database.py for this function
@@ -243,7 +242,7 @@ class ProjectSelection:
                        ]
 
         # Create the Board
-        b = Board(self.root, self.boards[index], self.buckets, self.user_type)
+        b = Board(self.root, self.boards[index], self.buckets)
         # Reparent the new Buckets
         for bucket in self.buckets:
             bucket.change_parent_to(b)
@@ -288,7 +287,7 @@ class ProjectSelection:
         
         
         # Create the Board
-        b = Board(self.root, boardTitle,binList, self.user_type)
+        b = Board(self.root, boardTitle,binList)
 
 
         cards = []
