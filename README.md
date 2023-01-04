@@ -4,6 +4,10 @@ CIS422 Group Project at University of Oregon
 Authors: Brad Bailey, Tiana Cook, Brandon Dodd, Cristian Ion, Wanrong Qi
 
 
+## About
+Kanban is a project aimed to assist project and task management in Instructor/Student settings. The project can also be used for personal use by using Instructor mode. Tasks/Projects are stored as boards. Each board has a certain amount of buckets that signify progress. Boards also have unique cards that have a name and description which represent different tasks or aspects of the board. These cards can be moved side to side to and from buckets to show progression of the tasks/aspects of the board.
+
+
 # How to Run:
 
 1. Establish a connection with MySQL\
