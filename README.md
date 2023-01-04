@@ -17,6 +17,13 @@ Authors: Brad Bailey, Tiana Cook, Brandon Dodd, Cristian Ion, Wanrong Qi
 # How to Use:
 **Note that login functionality is not implemented, on login screen either select Student or Instructor then login**
 ## Admin: 
-1. 
+1. Select instructor on login screen, (entering name is optional)
+2. You can create 2 types of Kanban boards
+   - Default boards consist of 3 categories: Not Started, In Progress, and Completed
+   - Custom boards allow you to create your own categories (buckets)
+     - dasdf
+4. d
+5. d
+6. 
 
 
